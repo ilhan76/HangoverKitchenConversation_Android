@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation_android.screens.login
+package com.kudashov.hangoverkitchenconversation.screens.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +14,9 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
+    }
+
+    fun initViews(){
     }
 
 }

@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation_android.data.dto
+package com.kudashov.hangoverkitchenconversation.data.dto
 
 data class UserDto(
     val isActivated: Boolean,

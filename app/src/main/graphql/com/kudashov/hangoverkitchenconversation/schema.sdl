@@ -1,0 +1,225 @@
+enum RegisterResult {
+  SUCCESS
+  FAILED
+}
+
+type SuccessAuth {
+  user: User!
+  accessToken: String!
+}
+
+type Query {
+  # Вход пользователя в приложение. Возвращает пользователя и accessToken.
+  # Сервер в дальнейшем будет определять зарегестрирован пользователь или нет по этому токену,
+  # который должен лежать в заголовке Authorization в виде "Bearer accessToken".
+  # Токен действителен в течении 30 минут, потом все запросы, где пользователю нужно будет иметь доступ,
+  # будут возвращать ошибку UNAUTHORISED.
+  # Также на клиенте должны быть включены credentials, чтобы сервер мог выполнить мутацию refresh.
+  # Если это будет невозможно, то нужно будет переписать мутацию refresh на сервере.
+  # Клиенту необходимо отправить refresh мутацию,
+  # и если она вернет еще раз ошибку UNAUTHORISED, то клиенту следует выйти из приложения.
+  login(email: String!, password: String!): SuccessAuth!
+  messages(roomId: String!, from: Int, to: Int): [Message!]!
+
+  # Возвращает уведомления, которые пришли пользователю. Необходимо отправить запрос при запуске приложения.
+  # В последующие разы рекомендуется использовать подписку.
+  #
+  # From и to диапозон порядковых значений, внутри которого будут возвращаться уведомления. Отсутствие какого-либо параметра сервер
+  # расценивает, как верхнюю/нижнюю границу.
+  notifications(from: Int, to: Int): [Notification!]!
+
+  # From и to диапозон порядковых значений, внутри которого будут возвращаться уведомления. Отсутствие какого-либо параметра сервер
+  # расценивает, как верхнюю/нижнюю границу.
+  allRooms(from: Int, to: Int): [Room!]!
+
+  # Если пользователь не имеет досутпа к комнате, то сервер возвращает ошибку PERMISSION_DENIED.
+  room(roomId: String!): Room!
+
+  # Возвращает пользователей, которые отправили запрос на вступление в закрытую комнату, но пока не получили подтверждения.
+  waitingUsers(roomId: String!): [Profile!]!
+
+  # Возвращает комнаты, в которых пользователь является админом.
+  managedRooms: [Room!]!
+
+  # Возвращает все комнаты, в которые входит пользователь.
+  ownRooms(from: Int, to: Int): [Room!]!
+}
+
+type Mutation {
+  # Регистрация пользователя.
+  #
+  # В случае, если пользователь с таким email уже существует, возвращает BAD_USER_INPUT.
+  # Возвращает SUCCESS, если мутация выполнена успешно.
+  # Отправляет пользователю на почту сообщение с ссылкой, по которой нужно перейти для активации аккаунта.
+  register(email: String!, password: String!): RegisterResult
+
+  # При аутентификации пользователя, сервер встраивает в сессию куки с флагом httpOnly.
+  # Эти куки и используются для аутентификации. Клиенту не следует их трогать и устанавливать самостоятельно.
+  refresh: SuccessAuth
+  logout: Boolean
+  sendMessage(message: SendMessageInput!): Message
+  createRoom(
+    title: String!
+    description: String
+    isOpen: Boolean
+    canSendAnonimusMessage: Boolean
+    limit: Int
+  ): Room!
+
+  # Запрос, по которому пользователь может присоединиться к комнате.
+  # Если комната открытая, в ней хватает места и пользователь не был оттуда выгнан, то возвращается объект комнаты,
+  # если комната закрыта и пользователь пытается присоединится второй раз, то возвращает ошибку PERMISSION_DENIED.
+  # Если пользователь впервый раз отправляет запрос на вступление в закрытую комнату, то админу этой комнаты
+  # приходит уведомление.
+  # Если пользователь пытается во второй раз присоединится к закрытой комнате, то с сервера возвращается ошибка PERMISSION_DENIED.
+  joinRoom(roomId: String!): Room
+
+  # Этим запросом админ может добавлять в закрытую комнату пользователей, которые отправили запрос на вступление.
+  # Возвращает PERMISSION_DENIED, если пользователь не отправлял запрос на вступление. Пользователю приходит уведомление о том,
+  # что его впустили в комнату.
+  letUserIn(userName: String!, roomId: String!): Boolean
+  kickUser(userName: String!, roomId: String!): Boolean
+  leaveRoom(roomId: String): Boolean
+
+  # Клиенту необходимо отправить только те поля, которые необходимо изменить.
+  # Если отправить имя пустой строкой, то сервер выкинет ошибку.
+  #
+  # Для оптимизации запросов к бд клиенту возвращается не всегда полный объект профиля, а только с теми полями, которые изменились.
+  # На клиенте следует дождаться ответа, убедится в отсутствии ошибок
+  # и провести необходимые действия ориентируясь на собственный объект изменений профиля.
+  # Если это будет критично, то на сервере очень легко вернуть актуальный профиль.
+  updateProfileInfo(changes: UpdateProfileInput): Profile
+}
+
+# Необходим для загрузки файлов с клиента.
+#
+# Документация к конкретной реализации серверной части.
+# Может стать отправной точкой, если необходимо получить информацию о деталях запроса.
+# Искренне надеюсь, что из этого файла по этой ссылке никто не перейдет.
+# https://www.apollographql.com/docs/apollo-server/data/file-uploads/
+#
+# Варианты реализации для языка kotlin:
+# https://www.apollographql.com/docs/android/essentials/mutations/
+# https://github.com/jaydenseric/graphql-multipart-request-spec
+scalar Upload
+
+type Message {
+  id: String!
+  date: String!
+  author: Profile
+  text: String!
+
+  # Адресс фотографий
+  photoes: [String!]
+
+  # id сообщения, на которое ответили
+  repliedId: String
+}
+
+input SendMessageInput {
+  roomId: String!
+
+  # Необходимо вставить в это поле хотя бы пустую строку.
+  text: String!
+  isAnonimus: Boolean!
+
+  # Нельзя отправить больше 5 фотографий
+  photoes: [Upload!]
+
+  # id сообщения, на которое ответил пользователь.
+  repliedId: String
+}
+
+# Подписка осуществляется по протоколу ws-graphql
+# При подписке клиенту необходимо отправлять access token в параметрах соединения с ключем auhorization.
+# Также необходимо помнить, что каждые полчаса access token сбрасывается и клиенту необходимо установить соединение заново,
+# с валидным токеном.
+type Subscription {
+  # Отправляет на клиент сообщения из комнат, в которые он вошел.
+  #
+  # id комнаты следует указывать только если пользователь общается в комнате, в которую не вошел,
+  # чтобы на клиент не отправлялись сообщения со всех чатов, а только с той, которая ему нужна.
+  newMessages(roomId: String): Message
+
+  # Подписка на уведомления.
+  notify: Notification
+}
+
+type UserNotification {
+  userName: String!
+}
+
+type RoomNotification {
+  roomTitle: String!
+  roomId: String!
+}
+
+type MessageNotification {
+  roomTitle: String!
+  text: String!
+
+  # Автор необязателен, т.к. может прийти анонимное сообщение.
+  author: Profile
+
+  # id сообщения, на которое ответили.
+  repliedId: String
+}
+
+# Объекты, которые могут лежать внутри Notification. Клиент сам должен обработать их и вывести нужное сообщение.
+union NotificationValue =
+    UserNotification
+  | RoomNotification
+  | MessageNotification
+
+enum NotificationType {
+  # Уведомление для админов комнат о том, что пользователь хочет к ним присоединится.
+  # В value лежит UserNotification
+  USER_WANT_JOIN_ROOM
+
+  # Уведомление пользоваетля о том, что ему разрешили присоединиться к комнате.
+  # В value лежит RoomNotification.
+  ROOM_ACCESS_ALLOWED
+
+  # Уведомление пользователя о новом сообщении.
+  # В value лежит MessageNotification.
+  NEW_MESSAGE
+
+  # Уведомление пользователя о том, что на его сообщение ответили.
+  # В value лежит MessageNotification.
+  MESSAGE_REPLY
+  UNKNOWN
+}
+
+type Notification {
+  type: NotificationType
+  value: NotificationValue
+}
+
+type Room {
+  id: String!
+  title: String!
+  isOpen: Boolean!
+  date: String
+  description: String
+  canSendAnonimusMessage: Boolean
+  limit: Int
+  participantsCount: Int
+  users: [Profile!]
+}
+
+# Профиль можно создать после активации аккаута.
+# Пользователю без имени недоступны никакие операции, кроме смены настроек и операций не требующих регистрации.
+type Profile {
+  name: String
+  description: String
+}
+
+type User {
+  isActivated: Boolean!
+  personalInfo: Profile
+}
+
+input UpdateProfileInput {
+  name: String
+  description: String
+}
