@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/roomsFragment">
+
+    <fragment
+        android:id="@+id/createRoomFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.CreateRoomFragment"
+        android:label="CreateRoomFragment"
+        tools:layout="@layout/fragment_create_room">
+        <action
+            android:id="@+id/action_createRoomFragment_to_roomsFragment"
+            app:destination="@id/roomsFragment"
+            app:popUpTo="@id/main_navigation_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fillProfileFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.FillProfileFragment"
+        android:label="FillProfileFragment"
+        tools:layout="@layout/fragment_register_fill_profile">
+        <action
+            android:id="@+id/action_fillProfileFragment_to_roomsFragment"
+            app:destination="@id/roomsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_roomsFragment"
+            app:destination="@id/roomsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_fillProfileFragment"
+            app:destination="@id/fillProfileFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomsFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.RoomsFragment"
+        android:label="RoomsFragment"
+        tools:layout="@layout/fragment_rooms">
+        <action
+            android:id="@+id/action_roomsFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
+        <action
+            android:id="@+id/action_roomsFragment_to_createRoomFragment"
+            app:destination="@id/createRoomFragment" />
+        <action
+            android:id="@+id/action_roomsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.RoomFragment"
+        android:label="RoomFragment"
+        tools:layout="@layout/fragment_room">
+        <action
+            android:id="@+id/action_roomFragment_to_roomsFragment"
+            app:destination="@id/roomsFragment"
+            app:popUpTo="@id/main_navigation_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_roomsFragment"
+            app:destination="@id/roomsFragment"
+            app:popUpTo="@id/main_navigation_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

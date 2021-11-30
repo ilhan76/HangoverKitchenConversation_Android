@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Hangover_Kitchen_Conversation</string>
-    <string name="login_btn">Login</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Hangover kitchen conversation</string>
+
+    <string name="hint_email">e-mail</string>
+    <string name="hint_pass">pass</string>
+
+    <!-- Login -->
+    <string name="login_btn">Войти</string>
+    <string name="login_btn_forgot_pass">Забыли пароль?</string>
+    <string name="register_btn">Зарегистрироваться</string>
+    <string name="register_continue">Продолжить</string>
 </resources>

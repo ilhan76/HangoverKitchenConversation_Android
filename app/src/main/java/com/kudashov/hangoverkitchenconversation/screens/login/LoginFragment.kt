@@ -15,7 +15,6 @@ class LoginFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
-
     fun initViews(){
     }
 
