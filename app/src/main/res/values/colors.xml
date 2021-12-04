@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="common_edit_txt">#E0DADA</color>
+    <color name="background">#FFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="placeholder">#33000000</color>
+    <color name="medium_light_gray">#E5E5E5</color>
 </resources>

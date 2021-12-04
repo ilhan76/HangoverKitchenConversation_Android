@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Hangover_Kitchen_Conversation</string>
+    <string name="app_name">Hangover kitchen conversation</string>
+
+    <string name="hint_email">e-mail</string>
+    <string name="hint_pass">pass</string>
+
+    <!-- Login -->
+    <string name="login_btn">Войти</string>
+    <string name="login_btn_forgot_pass">Забыли пароль?</string>
+
+    <!-- Register -->
+    <string name="register_btn">Зарегистрироваться</string>
+    <string name="register_continue">Продолжить</string>
+    <string name="register_name_hint_text">Имя</string>
+    <string name="register_hint_description_text">Описание</string>
+
 </resources>
