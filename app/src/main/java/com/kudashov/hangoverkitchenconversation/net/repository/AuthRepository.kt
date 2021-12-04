@@ -10,6 +10,7 @@ import com.kudashov.hangoverkitchenconversation.data.dto.ProfileDto
 import com.kudashov.hangoverkitchenconversation.data.dto.UserDto
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
+import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
@@ -38,10 +39,14 @@ class AuthRepository {
                                 accessToken = response.data?.login?.accessToken ?: ""
                             )
                         )
+                    }  else {
+                        Log.d("TAG", "onResponse: ${response.errors}")
+                        subject.onError(IncorrectPassOrEmail())
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
+                    Log.d("TAG", "onFailure: $e")
                     subject.onError(e)
                 }
             })

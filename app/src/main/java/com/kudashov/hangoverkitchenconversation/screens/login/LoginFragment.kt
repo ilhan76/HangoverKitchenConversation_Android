@@ -3,13 +3,9 @@ package com.kudashov.hangoverkitchenconversation.screens.login
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.util.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
 import com.kudashov.hangoverkitchenconversation.util.toast
@@ -26,14 +22,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun initViews() {
-/*        etv_pass_input.setOnFocusChangeListener { view, b ->
-            Log.d("TAG", "initViews: ")
-            if (view.isFocused) {
-                etv_pass.error = "In focus"
-            } else {
-                etv_pass.error = "Out of focus"
-            }
-        }*/
         btn_login.setOnClickListener {
             viewModel.login(
                 email = etv_email_input.text.toString(),
@@ -50,16 +38,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun render(state: BaseState) {
         when(state){
             BaseState.Default -> {
-                placeholder.isVisible = false
+                placeholder.visibility = View.GONE
             }
             is BaseState.Error -> {
-                placeholder.isVisible = false
+                placeholder.visibility = View.GONE
+                etv_email.error = state.message
+                etv_pass.error = state.message
             }
             BaseState.Loading -> {
-                placeholder.isVisible = true
+                placeholder.visibility = View.VISIBLE
             }
             is BaseState.Success<*> -> {
-                placeholder.isVisible = false
+                placeholder.visibility = View.GONE
                 findNavController().navigate(
                     R.id.action_loginFragment_to_roomsFragment,
                     bundleOf(
