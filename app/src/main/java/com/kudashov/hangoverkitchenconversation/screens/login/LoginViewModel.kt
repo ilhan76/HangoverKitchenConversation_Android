@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class LoginViewModel(
-    private val authInteractor: AuthInteractor = AuthInteractor(AuthRepository()),
+    private val authInteractor: AuthInteractor,
     private val prefInteractor: SharedPrefInteractor
 ) : ViewModel() {
 
