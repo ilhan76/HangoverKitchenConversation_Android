@@ -2,11 +2,13 @@ package com.kudashov.hangoverkitchenconversation.screens.register
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
 import com.kudashov.hangoverkitchenconversation.util.BaseState
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -45,7 +47,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
             BaseState.Loading -> {}
             is BaseState.Success<*> -> {
-                findNavController().navigate(R.id.action_registerFragment_to_fillProfileFragment)
+                findNavController().navigate(
+                    R.id.action_registerFragment_to_fillProfileFragment,
+                    bundleOf(
+                        Arguments.EMAIL to  etv_email_input.text.toString(),
+                        Arguments.PASS to etv_pass_input.text.toString()
+                    )
+                )
             }
         }
     }

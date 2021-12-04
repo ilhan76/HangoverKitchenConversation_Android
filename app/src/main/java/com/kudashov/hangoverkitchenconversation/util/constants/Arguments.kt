@@ -8,4 +8,7 @@ object Arguments {
 
     const val NAME = "name"
     const val DESCRIPTION = "description"
+
+    const val EMAIL = "email"
+    const val PASS = "pass"
 }
