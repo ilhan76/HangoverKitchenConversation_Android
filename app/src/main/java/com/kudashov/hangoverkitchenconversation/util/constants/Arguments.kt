@@ -11,4 +11,6 @@ object Arguments {
 
     const val EMAIL = "email"
     const val PASS = "pass"
+
+    const val VIEW_MODEL = "view_model"
 }
