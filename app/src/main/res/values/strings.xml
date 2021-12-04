@@ -7,6 +7,11 @@
     <!-- Login -->
     <string name="login_btn">Войти</string>
     <string name="login_btn_forgot_pass">Забыли пароль?</string>
+
+    <!-- Register -->
     <string name="register_btn">Зарегистрироваться</string>
     <string name="register_continue">Продолжить</string>
+    <string name="register_name_hint_text">Имя</string>
+    <string name="register_hint_description_text">Описание</string>
+
 </resources>
