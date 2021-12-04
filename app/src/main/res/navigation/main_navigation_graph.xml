@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/fillProfileFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.FillProfileFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.register.FillProfileFragment"
         android:label="FillProfileFragment"
         tools:layout="@layout/fragment_register_fill_profile">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.RegisterFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action

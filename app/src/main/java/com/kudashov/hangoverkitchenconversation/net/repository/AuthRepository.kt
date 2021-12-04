@@ -11,6 +11,7 @@ import com.kudashov.hangoverkitchenconversation.data.dto.UserDto
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
+import com.kudashov.hangoverkitchenconversation.util.RegisterFailed
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
@@ -67,6 +68,8 @@ class AuthRepository {
                         val result = response.data
                         Log.d("TAG", "onResponse: $result")
                         subject.onComplete()
+                    } else {
+                        subject.onError(RegisterFailed())
                     }
                 }
 

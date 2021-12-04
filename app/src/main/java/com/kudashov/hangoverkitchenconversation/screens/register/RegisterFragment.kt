@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation.screens
+package com.kudashov.hangoverkitchenconversation.screens.register
 
 import androidx.fragment.app.Fragment
 import com.kudashov.hangoverkitchenconversation_android.R
