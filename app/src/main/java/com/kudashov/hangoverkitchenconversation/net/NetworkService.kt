@@ -1,6 +1,7 @@
 package com.kudashov.hangoverkitchenconversation.net
 
 import com.apollographql.apollo.ApolloClient
+import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request

@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation.util
+package com.kudashov.hangoverkitchenconversation.util.constants
 
 object Arguments {
     const val APP_PREFERENCE = "app_preference"

@@ -2,7 +2,7 @@ package com.kudashov.hangoverkitchenconversation.interactor
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.kudashov.hangoverkitchenconversation.util.Arguments.APP_PREFERENCE
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments.APP_PREFERENCE
 
 class SharedPrefInteractor(val context: Context) {
     private val pref: SharedPreferences = context.getSharedPreferences(

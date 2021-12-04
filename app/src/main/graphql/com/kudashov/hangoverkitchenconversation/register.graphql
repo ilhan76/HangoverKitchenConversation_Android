@@ -1,3 +1,10 @@
 mutation registerUser($email: String!, $password:String!){
     register(email:$email, password:$password)
 }
+
+mutation updateUser($profile: UpdateProfileInput!){
+    updateProfileInfo(changes: $profile) {
+        name,
+        description
+    }
+}

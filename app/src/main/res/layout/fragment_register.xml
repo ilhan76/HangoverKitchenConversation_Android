@@ -30,6 +30,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etv_email_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="emailAddress"
@@ -68,12 +69,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintBottom_toTopOf="@+id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etv_pass" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etv_pass_confirm_input"
             android:layout_width="match_parent"
             android:autofillHints="password"
             android:background="@drawable/shape_edit_text"
@@ -86,7 +88,7 @@
 
     <Button
         style="@style/BaseButton"
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_register"
         android:layout_marginTop="10dp"
         android:text="@string/register_continue"
         app:layout_constraintEnd_toEndOf="parent"

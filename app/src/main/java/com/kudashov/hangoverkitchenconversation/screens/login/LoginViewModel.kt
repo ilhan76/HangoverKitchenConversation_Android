@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
-import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
-import com.kudashov.hangoverkitchenconversation.util.Arguments
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
 import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
 import com.kudashov.hangoverkitchenconversation.util.default

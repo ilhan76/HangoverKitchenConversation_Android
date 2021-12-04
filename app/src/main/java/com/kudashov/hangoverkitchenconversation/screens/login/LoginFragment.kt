@@ -8,9 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
-import com.kudashov.hangoverkitchenconversation.util.Arguments
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
-import com.kudashov.hangoverkitchenconversation.util.toast
 import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -35,6 +34,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 email = etv_email_input.text.toString(),
                 pass = etv_pass_input.text.toString()
             )
+        }
+
+        btn_register.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, ::render)
