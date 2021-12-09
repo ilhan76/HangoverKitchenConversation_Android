@@ -1,0 +1,41 @@
+query getMessages(
+    $roomId: String!
+    $from: Int
+    $to: Int
+){
+    messages(roomId: $roomId, from: $from, to: $to){
+        id,
+        date,
+        author{
+            name,
+            description
+        },
+        text,
+        photoes,
+        repliedId
+    }
+}
+
+mutation sendMessage(
+    $message: SendMessageInput!
+) {
+    sendMessage(message: $message) {
+        id
+        # А нужен ли здесь ответ?
+    }
+}
+
+subscription observeNewMessage(
+    $roomId: String!
+) {
+    newMessages(roomId: $roomId){
+        id,
+        author {
+            name,
+            description
+        },
+        text,
+        photoes,
+        repliedId
+    }
+}

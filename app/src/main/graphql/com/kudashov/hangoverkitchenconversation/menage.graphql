@@ -1,0 +1,26 @@
+query getWaitingUsers($roomId: String!) {
+    waitingUsers(roomId: $roomId){
+        name,
+        description
+    }
+}
+
+mutation letUserIn(
+    $userName: String!,
+    $roomId: String!
+) {
+    letUserIn(
+        userName: $userName,
+        roomId: $roomId
+    )
+}
+
+mutation kickUser (
+    $userName: String!,
+    $roomId: String!
+) {
+    kickUser(
+        userName: $userName,
+        roomId: $roomId
+    )
+}

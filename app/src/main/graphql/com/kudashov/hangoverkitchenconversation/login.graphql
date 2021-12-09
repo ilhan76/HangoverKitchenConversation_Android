@@ -10,3 +10,7 @@ query login($email: String!, $password: String!){
         accessToken
     }
 }
+
+mutation logout {
+    logout
+}

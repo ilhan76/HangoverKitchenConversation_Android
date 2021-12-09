@@ -1,0 +1,96 @@
+mutation createRoom(
+    $title: String!
+    $description: String
+    $isOpen: Boolean
+    $canSendAnonimusMessage: Boolean
+    $limit: Int
+){
+    createRoom(
+        title: $title,
+        description: $description,
+        isOpen: $isOpen,
+        canSendAnonimusMessage: $canSendAnonimusMessage,
+        limit: $limit
+    ){
+        id
+    }
+}
+
+query getRoom(
+    $roomId: String!
+) {
+    room(roomId: $roomId) {
+        id,
+        title,
+        isOpen,
+        date,
+        description,
+        canSendAnonimusMessage,
+        limit,
+        participantsCount,
+        users {
+            name,
+            description
+        }
+    }
+}
+
+mutation joinRoom($roomId: String!) {
+    joinRoom(roomId: $roomId){
+        id,
+        title,
+        isOpen,
+        date,
+        description,
+        canSendAnonimusMessage,
+        limit,
+        participantsCount,
+        users {
+            name,
+            description
+        }
+    }
+}
+
+mutation leaveRoom($roomId: String!) {
+    leaveRoom(roomId: $roomId)
+}
+
+query getAllRooms {
+    allRooms {
+        id,
+        date,
+        title,
+        description,
+        isOpen,
+        canSendAnonimusMessage,
+        limit,
+        participantsCount
+    }
+}
+
+query getOwnRoom {
+    ownRooms {
+        id,
+        date,
+        title,
+        description,
+        isOpen,
+        canSendAnonimusMessage,
+        limit,
+        participantsCount
+    }
+}
+
+query getManagedRoom{
+    managedRooms{
+        id,
+        date,
+        title,
+        description,
+        isOpen,
+        canSendAnonimusMessage,
+        limit,
+        participantsCount
+    }
+}
