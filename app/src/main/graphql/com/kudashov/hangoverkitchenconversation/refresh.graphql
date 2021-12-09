@@ -1,0 +1,12 @@
+mutation refresh{
+    refresh {
+        user{
+            isActivated,
+            personalInfo{
+                name,
+                description
+            }
+        }
+        accessToken
+    }
+}
