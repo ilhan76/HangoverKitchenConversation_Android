@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
-import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
-import com.kudashov.hangoverkitchenconversation.util.Arguments
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
 import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
 import com.kudashov.hangoverkitchenconversation.util.default
@@ -16,7 +15,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class LoginViewModel(
-    private val authInteractor: AuthInteractor = AuthInteractor(AuthRepository()),
+    private val authInteractor: AuthInteractor,
     private val prefInteractor: SharedPrefInteractor
 ) : ViewModel() {
 

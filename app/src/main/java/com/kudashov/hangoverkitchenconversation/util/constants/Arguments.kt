@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation.util
+package com.kudashov.hangoverkitchenconversation.util.constants
 
 object Arguments {
     const val APP_PREFERENCE = "app_preference"
@@ -8,4 +8,9 @@ object Arguments {
 
     const val NAME = "name"
     const val DESCRIPTION = "description"
+
+    const val EMAIL = "email"
+    const val PASS = "pass"
+
+    const val VIEW_MODEL = "view_model"
 }

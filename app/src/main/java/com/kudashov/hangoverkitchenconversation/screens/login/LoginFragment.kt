@@ -4,17 +4,24 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.kudashov.hangoverkitchenconversation.util.Arguments
+import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
+import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
+import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
+import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
-import com.kudashov.hangoverkitchenconversation.util.toast
+import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private val viewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModelsFactory{
+        LoginViewModel(
+            authInteractor = AuthInteractor(AuthRepository()),
+            prefInteractor = SharedPrefInteractor(requireContext())
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,8 +35,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 pass = etv_pass_input.text.toString()
             )
         }
-        btn_forgot_pass.setOnClickListener {
-            requireContext().toast("дьвмщвьпщь")
+
+        btn_register.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
         viewModel.liveData.observe(viewLifecycleOwner, ::render)

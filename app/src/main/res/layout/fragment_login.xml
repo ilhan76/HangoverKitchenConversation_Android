@@ -37,6 +37,7 @@
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="10dp" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -64,34 +65,34 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        style="@style/BaseButton"
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
         android:layout_marginTop="10dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:text="@string/login_btn"
-        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/btn_forgot_pass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etv_pass" />
 
     <Button
+        style="@style/BaseButton"
         android:id="@+id/btn_forgot_pass"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/background"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
         android:text="@string/login_btn_forgot_pass"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+    <Button
+        style="@style/BaseButton"
+        android:id="@+id/btn_register"
+        android:layout_marginTop="10dp"
+        android:text="@string/login_btn_register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_forgot_pass" />
 
     <FrameLayout
         android:id="@+id/placeholder"
@@ -99,12 +100,13 @@
         android:layout_height="match_parent"
         android:background="@color/placeholder"
         android:elevation="10dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

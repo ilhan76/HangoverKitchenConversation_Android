@@ -13,5 +13,6 @@
     <string name="register_continue">Продолжить</string>
     <string name="register_name_hint_text">Имя</string>
     <string name="register_hint_description_text">Описание</string>
+    <string name="login_btn_register">Зарегистрироваться</string>
 
 </resources>
