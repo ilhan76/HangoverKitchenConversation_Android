@@ -15,4 +15,12 @@
     <string name="register_hint_description_text">Описание</string>
     <string name="login_btn_register">Зарегистрироваться</string>
 
+    <!-- Create Room -->
+    <string name="create_room_title_hint_text">Название</string>
+    <string name="create_room_description_hint_text">Описание</string>
+    <string name="create_room_is_open_hint_text">Открына?</string>
+    <string name="create_room_can_anonim_message_hint_text">Можно отправлять анонимные сообщения?</string>
+    <string name="create_room_limit_hint_text">Лимин участников</string>
+    <string name="create_room_btn_create_text">Создать комнату</string>
+
 </resources>
