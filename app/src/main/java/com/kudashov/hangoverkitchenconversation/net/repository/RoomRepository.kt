@@ -8,6 +8,7 @@ import com.kudashov.hangoverkitchenconversation.*
 import com.kudashov.hangoverkitchenconversation.data.RoomDetail
 import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
+import com.kudashov.hangoverkitchenconversation.util.CustomException
 import com.kudashov.hangoverkitchenconversation.util.FailToJoinRoom
 import com.kudashov.hangoverkitchenconversation.util.FailToLeaveRoom
 import io.reactivex.rxjava3.core.Completable
@@ -31,6 +32,7 @@ class RoomRepository {
         val mutation = CreateRoomMutation(
             title, description, isOpen, canSendAnonymousMessage, limit
         )
+        Log.d(tag, "createRoom: $token")
 
         NetworkService
             .getInstance()
@@ -42,6 +44,11 @@ class RoomRepository {
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.createRoom?.id!!)
+                    } else {
+                        response.errors?.forEach {
+                            Log.d(tag, "onResponse: $it")
+                        }
+                        subject.onError(CustomException(response.errors?.first()?.message))
                     }
                 }
 

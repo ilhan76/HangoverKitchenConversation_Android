@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation_graph"
-    app:startDestination="@id/roomsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/createRoomFragment"
@@ -15,6 +15,9 @@
             app:destination="@id/roomsFragment"
             app:popUpTo="@id/main_navigation_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_createRoomFragment_to_roomFragment"
+            app:destination="@id/roomFragment" />
     </fragment>
     <fragment
         android:id="@+id/fillProfileFragment"

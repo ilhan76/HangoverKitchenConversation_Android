@@ -17,4 +17,8 @@ class SharedPrefInteractor(
         editor.putString(key, data)
         editor.apply()
     }
+
+    fun getString(key: String): String {
+        return pref.getString(key, "") ?: ""
+    }
 }

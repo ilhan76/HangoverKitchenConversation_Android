@@ -37,6 +37,7 @@ class LoginViewModel(
     private fun onSuccess(response: SuccessAuthResponse) {
         prefInteractor.putString(Arguments.NAME, response.user.personalInfo?.name ?: "")
         prefInteractor.putString(Arguments.DESCRIPTION, response.user.personalInfo?.description ?: "")
+        prefInteractor.putString(Arguments.ACCESS_TOKEN, response.accessToken)
 
         _liveData.value = BaseState.Success(response.accessToken)
     }

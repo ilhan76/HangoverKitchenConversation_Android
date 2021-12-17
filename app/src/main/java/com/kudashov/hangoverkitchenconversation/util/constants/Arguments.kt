@@ -13,4 +13,6 @@ object Arguments {
     const val PASS = "pass"
 
     const val VIEW_MODEL = "view_model"
+
+    const val ROOM_ID = "room_id"
 }
