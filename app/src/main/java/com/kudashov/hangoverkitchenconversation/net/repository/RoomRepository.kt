@@ -38,8 +38,7 @@ class RoomRepository {
             ?.mutate(mutation)
             ?.enqueue(object : ApolloCall.Callback<CreateRoomMutation.Data>() {
                 override fun onResponse(response: Response<CreateRoomMutation.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.createRoom?.id!!)
@@ -64,8 +63,7 @@ class RoomRepository {
             ?.query(query)
             ?.enqueue(object : ApolloCall.Callback<GetRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetRoomQuery.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.room?.toDomain())
@@ -88,8 +86,7 @@ class RoomRepository {
             ?.mutate(JoinRoomMutation(id))
             ?.enqueue(object : ApolloCall.Callback<JoinRoomMutation.Data>() {
                 override fun onResponse(response: Response<JoinRoomMutation.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.joinRoom?.toDomain())
@@ -116,8 +113,7 @@ class RoomRepository {
             ?.mutate(LeaveRoomMutation(id))
             ?.enqueue(object : ApolloCall.Callback<LeaveRoomMutation.Data>() {
                 override fun onResponse(response: Response<LeaveRoomMutation.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         if (response.data?.leaveRoom == true) {
@@ -148,11 +144,10 @@ class RoomRepository {
             ?.query(GetAllRoomsQuery())
             ?.enqueue(object : ApolloCall.Callback<GetAllRoomsQuery.Data>() {
                 override fun onResponse(response: Response<GetAllRoomsQuery.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        subject.onNext(result?.allRooms?.map { it.toDomain() })
+                        subject.onNext(response.data?.allRooms?.map { it.toDomain() })
                     }
                 }
 
@@ -174,11 +169,10 @@ class RoomRepository {
             ?.query(GetOwnRoomQuery())
             ?.enqueue(object : ApolloCall.Callback<GetOwnRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetOwnRoomQuery.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        subject.onNext(result?.ownRooms?.map { it.toDomain() })
+                        subject.onNext(response.data?.ownRooms?.map { it.toDomain() })
                     }
                 }
 
@@ -200,11 +194,10 @@ class RoomRepository {
             ?.query(GetManagedRoomQuery())
             ?.enqueue(object : ApolloCall.Callback<GetManagedRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetManagedRoomQuery.Data>) {
-                    val result = response.data
-                    Log.d(tag, "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        subject.onNext(result?.managedRooms?.map { it.toDomain() })
+                        subject.onNext(response.data?.managedRooms?.map { it.toDomain() })
                     }
                 }
 

@@ -7,7 +7,7 @@ import com.apollographql.apollo.exception.ApolloException
 import com.kudashov.hangoverkitchenconversation.LoginQuery
 import com.kudashov.hangoverkitchenconversation.RegisterUserMutation
 import com.kudashov.hangoverkitchenconversation.UpdateUserMutation
-import com.kudashov.hangoverkitchenconversation.data.domain.Profile
+import com.kudashov.hangoverkitchenconversation.data.Profile
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.type.RegisterResult
@@ -20,8 +20,11 @@ import com.kudashov.hangoverkitchenconversation.util.constants.RequestParams.COD
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.subjects.Subject
 
 class AuthRepository {
+
+    private val tag: String = this.javaClass.simpleName
 
     fun login(email: String, pass: String): Observable<SuccessAuthResponse> {
         val subject = PublishSubject.create<SuccessAuthResponse>()
@@ -33,6 +36,8 @@ class AuthRepository {
             ?.query(loginQuery)
             ?.enqueue(object : ApolloCall.Callback<LoginQuery.Data>() {
                 override fun onResponse(response: Response<LoginQuery.Data>) {
+                    Log.d(tag, "onResponse: ${response.data}")
+
                     if (!response.hasErrors()) {
                         response.data
                         subject.onNext(response.data?.login?.toSuccessAuthResponse())
@@ -60,8 +65,7 @@ class AuthRepository {
             ?.mutate(registerMutation)
             ?.enqueue(object : ApolloCall.Callback<RegisterUserMutation.Data>() {
                 override fun onResponse(response: Response<RegisterUserMutation.Data>) {
-                    val result = response.data
-                    Log.d("TAG", "onResponse: $result")
+                    Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         when (response.data?.register) {
@@ -82,7 +86,7 @@ class AuthRepository {
 
                 override fun onFailure(e: ApolloException) {
                     Log.d("TAG", "onFailure: $e")
-                    subject.onError(e)
+                    handleError(e, subject)
                 }
             })
 
@@ -98,17 +102,24 @@ class AuthRepository {
             ?.mutate(mutation)
             ?.enqueue(object : ApolloCall.Callback<UpdateUserMutation.Data>() {
                 override fun onResponse(response: Response<UpdateUserMutation.Data>) {
+                    Log.d(tag, "onResponse: ${response.data}")
+
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.updateProfileInfo?.toProfile())
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    subject.onError(e)
+                    handleError(e, subject)
                 }
 
             })
 
         return subject
+    }
+
+    private fun<T> handleError(e: ApolloException, hub: Subject<T>){
+        Log.d(tag, "onFailure: $e")
+        hub.onError(e)
     }
 }

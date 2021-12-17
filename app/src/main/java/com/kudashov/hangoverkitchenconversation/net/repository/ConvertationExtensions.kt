@@ -1,7 +1,7 @@
 package com.kudashov.hangoverkitchenconversation.net.repository
 
 import com.kudashov.hangoverkitchenconversation.*
-import com.kudashov.hangoverkitchenconversation.data.domain.Profile
+import com.kudashov.hangoverkitchenconversation.data.Profile
 import com.kudashov.hangoverkitchenconversation.data.RoomDetail
 import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.data.User
