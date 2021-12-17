@@ -1,9 +1,9 @@
 mutation createRoom(
     $title: String!
-    $description: String
-    $isOpen: Boolean
-    $canSendAnonimusMessage: Boolean
-    $limit: Int
+    $description: String!
+    $isOpen: Boolean!
+    $canSendAnonimusMessage: Boolean!
+    $limit: Int!
 ){
     createRoom(
         title: $title,
@@ -59,11 +59,9 @@ mutation leaveRoom($roomId: String!) {
 query getAllRooms {
     allRooms {
         id,
-        date,
         title,
         description,
         isOpen,
-        canSendAnonimusMessage,
         limit,
         participantsCount
     }
@@ -71,12 +69,10 @@ query getAllRooms {
 
 query getOwnRoom {
     ownRooms {
-        id,
-        date,
+        id
         title,
         description,
         isOpen,
-        canSendAnonimusMessage,
         limit,
         participantsCount
     }
@@ -85,11 +81,9 @@ query getOwnRoom {
 query getManagedRoom{
     managedRooms{
         id,
-        date,
         title,
         description,
         isOpen,
-        canSendAnonimusMessage,
         limit,
         participantsCount
     }

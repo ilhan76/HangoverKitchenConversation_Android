@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createRoomFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.CreateRoomFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.create_room.CreateRoomFragment"
         android:label="CreateRoomFragment"
         tools:layout="@layout/fragment_create_room">
         <action
