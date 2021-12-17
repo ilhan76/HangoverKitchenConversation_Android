@@ -3,6 +3,7 @@
 
     <string name="hint_email">e-mail</string>
     <string name="hint_pass">pass</string>
+    <string name="content_description">content description</string>
 
     <!-- Login -->
     <string name="login_btn">Войти</string>

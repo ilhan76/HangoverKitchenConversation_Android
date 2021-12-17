@@ -24,6 +24,8 @@
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/fragment_register_fill_profile.xml" value="0.31875" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/fragment_room.xml" value="0.31875" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/fragment_rooms.xml" value="0.31875" />
+        <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/item_message.xml" value="0.5" />
+        <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/item_room.xml" value="0.5" />
       </map>
     </option>
   </component>

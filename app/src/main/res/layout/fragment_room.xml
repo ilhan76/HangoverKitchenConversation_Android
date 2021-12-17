@@ -57,7 +57,7 @@
             android:layout_height="35dp"
             android:layout_marginStart="20dp"
             android:layout_weight="18"
-            android:background="@drawable/shape_edit_text"
+            android:background="@drawable/shape_rounded"
             android:paddingHorizontal="10dp" />
 
         <ImageView

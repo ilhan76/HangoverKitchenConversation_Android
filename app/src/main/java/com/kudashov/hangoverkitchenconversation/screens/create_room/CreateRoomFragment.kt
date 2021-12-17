@@ -72,7 +72,6 @@ class CreateRoomFragment : Fragment(R.layout.fragment_create_room) {
                     R.id.action_createRoomFragment_to_roomFragment,
                     bundleOf(Arguments.ROOM_ID to state.content)
                 )
-                // todo переход на экран комнаты
             }
         }
     }
