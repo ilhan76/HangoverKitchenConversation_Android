@@ -8,8 +8,6 @@ import com.kudashov.hangoverkitchenconversation.LoginQuery
 import com.kudashov.hangoverkitchenconversation.RegisterUserMutation
 import com.kudashov.hangoverkitchenconversation.UpdateUserMutation
 import com.kudashov.hangoverkitchenconversation.data.domain.Profile
-import com.kudashov.hangoverkitchenconversation.data.dto.ProfileDto
-import com.kudashov.hangoverkitchenconversation.data.dto.UserDto
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.type.RegisterResult
@@ -19,6 +17,7 @@ import com.kudashov.hangoverkitchenconversation.util.constants.ErrorCodes.BAD_US
 import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
 import com.kudashov.hangoverkitchenconversation.util.RegisterFailed
 import com.kudashov.hangoverkitchenconversation.util.constants.RequestParams.CODE
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
 
@@ -51,7 +50,7 @@ class AuthRepository {
         return subject
     }
 
-    fun register(email: String, pass: String): Observable<Unit> {
+    fun register(email: String, pass: String): Completable {
         val subject = PublishSubject.create<Unit>()
         val registerMutation = RegisterUserMutation(email, pass)
 
@@ -87,7 +86,7 @@ class AuthRepository {
                 }
             })
 
-        return subject
+        return Completable.fromObservable(subject)
     }
 
     fun updateProfileInfo(token: String, profile: UpdateProfileInput): Observable<Profile> {
@@ -112,21 +111,4 @@ class AuthRepository {
 
         return subject
     }
-
-    private fun LoginQuery.Login.toSuccessAuthResponse() = SuccessAuthResponse(
-        user = UserDto(
-            isActivated = this.user.isActivated,
-            personalInfo = ProfileDto(
-                name = this.user.personalInfo?.name ?: "",
-                description = this.user.personalInfo?.description
-                    ?: ""
-            )
-        ),
-        accessToken = this.accessToken
-    )
-
-    private fun UpdateUserMutation.UpdateProfileInfo.toProfile() = Profile(
-        name = this.name ?: "",
-        description = this.description ?: ""
-    )
 }

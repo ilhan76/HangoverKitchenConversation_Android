@@ -5,8 +5,8 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.kudashov.hangoverkitchenconversation.*
-import com.kudashov.hangoverkitchenconversation.data.domain.RoomDetail
-import com.kudashov.hangoverkitchenconversation.data.domain.RoomItem
+import com.kudashov.hangoverkitchenconversation.data.RoomDetail
+import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.util.FailToJoinRoom
 import com.kudashov.hangoverkitchenconversation.util.FailToLeaveRoom

@@ -2,6 +2,7 @@ package com.kudashov.hangoverkitchenconversation.interactor
 
 import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
 class AuthInteractor(
@@ -12,7 +13,7 @@ class AuthInteractor(
         return repository.login(email, pass)
     }
 
-    fun register(email: String, pass: String): Observable<Unit> {
+    fun register(email: String, pass: String): Completable {
         return repository.register(email, pass)
     }
 }

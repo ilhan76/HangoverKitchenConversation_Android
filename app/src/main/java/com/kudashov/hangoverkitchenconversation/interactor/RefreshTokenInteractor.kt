@@ -7,7 +7,7 @@ class RefreshTokenInteractor {
 
     fun refresh(): Observable<String>{
         val subject = PublishSubject.create<String>()
-
+        // todo Продумать, как лучше делать рефреш
         return subject
     }
 }

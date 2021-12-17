@@ -1,4 +1,9 @@
 package com.kudashov.hangoverkitchenconversation.interactor
 
-class RoomInteractor {
+import com.kudashov.hangoverkitchenconversation.net.repository.RoomRepository
+
+class RoomInteractor(
+    val roomRepository: RoomRepository
+) {
+
 }

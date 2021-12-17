@@ -23,7 +23,7 @@ class RegisterViewModel(
         authInteractor.register(email, pass)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {onError(it)}, {onComplete()})
+            .subscribe({onComplete()}, {onError(it)})
     }
 
     private fun onError(error: Throwable){

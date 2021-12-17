@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation.data.domain
+package com.kudashov.hangoverkitchenconversation.data
 
 data class Profile(
     val name: String,
