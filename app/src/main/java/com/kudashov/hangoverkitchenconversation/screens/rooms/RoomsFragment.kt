@@ -6,7 +6,11 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import com.kudashov.hangoverkitchenconversation.adapters.RoomsAdapter
+import com.kudashov.hangoverkitchenconversation.adapters.delegates.RoomItemClickDelegate
+import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.interactor.RoomInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.net.repository.RoomRepository
@@ -17,7 +21,9 @@ import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_rooms.*
 
-class RoomsFragment : Fragment(R.layout.fragment_rooms) {
+class RoomsFragment : Fragment(R.layout.fragment_rooms), RoomItemClickDelegate {
+
+    private val adapter: RoomsAdapter = RoomsAdapter()
 
     private val viewModel by viewModelsFactory {
         RoomsViewModel(
@@ -34,6 +40,8 @@ class RoomsFragment : Fragment(R.layout.fragment_rooms) {
 
     private fun initView() {
         viewModel.liveData.observe(viewLifecycleOwner, ::render)
+        adapter.attachDelegate(this)
+        rv_rooms.adapter = adapter
         iv_profile.setOnClickListener {
             findNavController().navigate(R.id.action_roomsFragment_to_profileFragment)
         }
@@ -42,25 +50,14 @@ class RoomsFragment : Fragment(R.layout.fragment_rooms) {
         }
         tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
-                        Toast.makeText(requireContext(), "All Rooms", Toast.LENGTH_SHORT).show()
-                        viewModel.getAllRooms()
-                    }
-                    1 -> {
-                        Toast.makeText(requireContext(), "My Rooms", Toast.LENGTH_SHORT).show()
-                        viewModel.getOwnRooms()
-                    }
-                    2 -> {
-                        Toast.makeText(requireContext(), "I am Admin", Toast.LENGTH_SHORT).show()
-                        viewModel.getManegedRooms()
-                    }
-                }
+                onTabClicked(tab?.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                onTabClicked(tab?.position)
+            }
 
         })
     }
@@ -80,7 +77,27 @@ class RoomsFragment : Fragment(R.layout.fragment_rooms) {
             is BaseState.Success<*> -> {
                 placeholder.visibility = View.GONE
                 logDebug(state.content.toString())
+                adapter.setList(state.content as List<RoomItem>)
+//                rv_rooms.smoothScrollToPosition(adapter.itemCount)
             }
         }
+    }
+
+    private fun onTabClicked(position: Int?) {
+        adapter.setList(emptyList())
+        when (position) {
+            0 -> viewModel.getAllRooms()
+            1 -> viewModel.getOwnRooms()
+            2 -> viewModel.getManegedRooms()
+        }
+    }
+
+    override fun toRoomDetail(id: String?) {
+        findNavController().navigate(
+            R.id.action_roomsFragment_to_roomFragment,
+            bundleOf(
+                Arguments.ROOM_ID to id
+            )
+        )
     }
 }

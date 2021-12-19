@@ -16,6 +16,10 @@
     <string name="register_hint_description_text">Описание</string>
     <string name="login_btn_register">Зарегистрироваться</string>
 
+    <!-- Rooms -->
+    <string name="item_room_participant_limit_format"> %1$d | %2$d</string>
+    <string name="item_room_participant_no_limit_format"> %1$d</string>
+
     <!-- Create Room -->
     <string name="create_room_title_hint_text">Название</string>
     <string name="create_room_description_hint_text">Описание</string>

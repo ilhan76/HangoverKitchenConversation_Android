@@ -5,12 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/clickable_area"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/selectableItemBackground"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_title"
         style="@style/BaseTextStyle"
-        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_description"
+        app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Room Title" />
@@ -18,21 +30,20 @@
     <TextView
         android:id="@+id/tv_description"
         style="@style/BaseTextStyle"
+        android:layout_width="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/barrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:text="Описание комнаты" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="tv_number_of_participants,iv_is_open" />
 
     <ImageView
         android:id="@+id/iv_is_open"
@@ -47,8 +58,20 @@
     <TextView
         android:id="@+id/tv_number_of_participants"
         style="@style/BaseTextStyle"
+        android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="@+id/iv_is_open"
+        app:layout_constraintStart_toEndOf="@+id/barrier"
         app:layout_constraintTop_toBottomOf="@+id/iv_is_open"
         tools:text="12 | 100" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
