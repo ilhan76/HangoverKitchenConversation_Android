@@ -39,9 +39,9 @@
         android:id="@+id/rv_messages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_message"
         app:layout_constraintBottom_toTopOf="@+id/send_message_area"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:listitem="@layout/item_message" />
 
     <LinearLayout
         android:id="@+id/send_message_area"
@@ -52,25 +52,30 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
-            android:id="@+id/etv_email"
+            android:id="@+id/etv_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingStart="20dp"
             android:layout_weight="18"
-            android:paddingHorizontal="10dp" />
+            android:paddingHorizontal="10dp"
+            android:paddingStart="20dp" />
 
         <ImageView
             android:id="@+id/iv_send"
             android:layout_width="35dp"
             android:layout_height="55dp"
-            android:paddingVertical="10dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
+            android:paddingVertical="10dp"
             android:src="@drawable/ic_send"
             app:tint="?attr/colorSecondary" />
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/placeholder"
+        layout="@layout/layout_placeholder"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

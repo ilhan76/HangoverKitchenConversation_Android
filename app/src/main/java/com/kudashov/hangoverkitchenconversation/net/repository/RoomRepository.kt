@@ -37,7 +37,7 @@ class RoomRepository {
             ?.mutate(mutation)
             ?.enqueue(object : ApolloCall.Callback<CreateRoomMutation.Data>() {
                 override fun onResponse(response: Response<CreateRoomMutation.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "createRoom - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.createRoom?.id!!)
@@ -67,7 +67,7 @@ class RoomRepository {
             ?.query(query)
             ?.enqueue(object : ApolloCall.Callback<GetRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetRoomQuery.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "getRoom - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.room?.toDomain())
@@ -84,13 +84,15 @@ class RoomRepository {
 
     fun joinRoom(token: String, id: String): Observable<RoomDetail> {
         val subject = PublishSubject.create<RoomDetail>()
+        logDebug("roomId: $id")
 
         NetworkService.getInstance()
             ?.getApolloClientWithTokenInterceptor(token)
             ?.mutate(JoinRoomMutation(id))
             ?.enqueue(object : ApolloCall.Callback<JoinRoomMutation.Data>() {
                 override fun onResponse(response: Response<JoinRoomMutation.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "joinRoom - onResponse: ${response.data}")
+                    logError(response.errors.toString())
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.joinRoom?.toDomain())
@@ -102,7 +104,6 @@ class RoomRepository {
                 override fun onFailure(e: ApolloException) {
                     handleError(e, subject)
                 }
-
             })
 
         return subject
@@ -117,7 +118,7 @@ class RoomRepository {
             ?.mutate(LeaveRoomMutation(id))
             ?.enqueue(object : ApolloCall.Callback<LeaveRoomMutation.Data>() {
                 override fun onResponse(response: Response<LeaveRoomMutation.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "leaveRoom - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         if (response.data?.leaveRoom == true) {
@@ -133,7 +134,6 @@ class RoomRepository {
                 override fun onFailure(e: ApolloException) {
                     handleError(e, subject)
                 }
-
             })
 
         return Completable.fromObservable(subject)
@@ -148,7 +148,7 @@ class RoomRepository {
             ?.query(GetAllRoomsQuery())
             ?.enqueue(object : ApolloCall.Callback<GetAllRoomsQuery.Data>() {
                 override fun onResponse(response: Response<GetAllRoomsQuery.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "getAllRooms - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.allRooms?.map { it.toDomain() })
@@ -160,7 +160,6 @@ class RoomRepository {
                 override fun onFailure(e: ApolloException) {
                     handleError(e, subject)
                 }
-
             })
 
         return subject
@@ -175,7 +174,7 @@ class RoomRepository {
             ?.query(GetOwnRoomQuery())
             ?.enqueue(object : ApolloCall.Callback<GetOwnRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetOwnRoomQuery.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "getOwnRooms - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.ownRooms?.map { it.toDomain() })
@@ -187,7 +186,6 @@ class RoomRepository {
                 override fun onFailure(e: ApolloException) {
                     handleError(e, subject)
                 }
-
             })
 
         return subject
@@ -202,7 +200,7 @@ class RoomRepository {
             ?.query(GetManagedRoomQuery())
             ?.enqueue(object : ApolloCall.Callback<GetManagedRoomQuery.Data>() {
                 override fun onResponse(response: Response<GetManagedRoomQuery.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    Log.d(tag, "getManegedRooms - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.managedRooms?.map { it.toDomain() })

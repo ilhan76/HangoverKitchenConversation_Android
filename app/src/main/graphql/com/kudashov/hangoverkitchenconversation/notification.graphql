@@ -3,9 +3,6 @@
 
 subscription observeNotification {
     notify {
-        type,
-        value {
-
-        }
+        type
     }
 }

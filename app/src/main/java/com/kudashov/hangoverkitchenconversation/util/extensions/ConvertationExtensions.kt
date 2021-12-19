@@ -84,7 +84,7 @@ fun GetManagedRoomQuery.ManagedRoom.toDomain() = RoomItem(
 )
 // endregion
 
-//region
+//region Messages
 fun GetMessagesQuery.Message.toDomain() = Message(
     id = id,
     date = date, //todo Добавить форматирование

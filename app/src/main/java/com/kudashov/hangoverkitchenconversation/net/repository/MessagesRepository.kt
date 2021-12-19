@@ -134,5 +134,6 @@ class MessagesRepository {
     private fun <T> handleError(e: ApolloException, hub: Subject<T>) {
         logError("onFailure: $e")
         hub.onError(e)
+        throw e
     }
 }

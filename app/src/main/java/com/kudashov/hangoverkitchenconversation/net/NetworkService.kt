@@ -23,8 +23,7 @@ class NetworkService {
     private val BASE_URL = "https://afternoon-brushlands-65833.herokuapp.com/graphql"
 
     fun getApolloClient(): ApolloClient {
-        val okHttp = OkHttpClient
-            .Builder()
+        val okHttp = OkHttpClient.Builder()
             .connectTimeout(20, TimeUnit.SECONDS)
             .addHttpLoggingInterceptor()
             .build()
@@ -48,6 +47,8 @@ class NetworkService {
                 builder.header("Authorization", "Bearer $token")
                 return@Interceptor chain.proceed(builder.build())
             })
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .addHttpLoggingInterceptor()
             .build()
 
         return ApolloClient.builder()
