@@ -1,4 +1,4 @@
-package com.kudashov.hangoverkitchenconversation.screens
+package com.kudashov.hangoverkitchenconversation.screens.room
 
 import android.os.Bundle
 import android.view.View

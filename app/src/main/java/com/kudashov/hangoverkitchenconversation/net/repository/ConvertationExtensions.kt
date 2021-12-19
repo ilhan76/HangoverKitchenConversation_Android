@@ -1,10 +1,7 @@
 package com.kudashov.hangoverkitchenconversation.net.repository
 
 import com.kudashov.hangoverkitchenconversation.*
-import com.kudashov.hangoverkitchenconversation.data.Profile
-import com.kudashov.hangoverkitchenconversation.data.RoomDetail
-import com.kudashov.hangoverkitchenconversation.data.RoomItem
-import com.kudashov.hangoverkitchenconversation.data.User
+import com.kudashov.hangoverkitchenconversation.data.*
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 
 // region Auth
@@ -86,3 +83,27 @@ fun GetManagedRoomQuery.ManagedRoom.toDomain() = RoomItem(
     participantsCount = participantsCount ?: RoomDetail.BASE_PARTICIPANT_COUNT
 )
 // endregion
+
+//region
+fun GetMessagesQuery.Message.toDomain() = Message(
+    id = id,
+    date = date, //todo Добавить форматирование
+    author = Profile(
+        name = author?.name ?: "Anonymous",
+        description = author?.description ?: ""
+    ),
+    text = text,
+    photos = photoes ?: emptyList()
+)
+
+fun ObserveNewMessageSubscription.NewMessages.toDomain() = Message(
+    id = id,
+    date = date, //todo Добавить форматирование
+    author = Profile(
+        name = author?.name ?: "Anonymous",
+        description = author?.description ?: ""
+    ),
+    text = text,
+    photos = photoes ?: emptyList()
+)
+//endregion

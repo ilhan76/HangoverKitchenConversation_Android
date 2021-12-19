@@ -1,3 +1,11 @@
 # Здесь будут запросы, связанные с уведомлениями.
 # Пока не разобрался с Union
-#
+
+subscription observeNotification {
+    notify {
+        type,
+        value {
+
+        }
+    }
+}

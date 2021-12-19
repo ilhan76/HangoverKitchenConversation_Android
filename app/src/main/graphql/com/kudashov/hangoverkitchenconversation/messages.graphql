@@ -20,8 +20,16 @@ mutation sendMessage(
     $message: SendMessageInput!
 ) {
     sendMessage(message: $message) {
-        id
         # А нужен ли здесь ответ?
+        id,
+        date,
+        author{
+            name,
+            description
+        },
+        text,
+        photoes,
+        repliedId
     }
 }
 
@@ -30,6 +38,7 @@ subscription observeNewMessage(
 ) {
     newMessages(roomId: $roomId){
         id,
+        date,
         author {
             name,
             description

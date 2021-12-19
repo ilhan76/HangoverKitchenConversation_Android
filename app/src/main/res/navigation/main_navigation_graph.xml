@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.RoomFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.room.RoomFragment"
         android:label="RoomFragment"
         tools:layout="@layout/fragment_room">
         <action

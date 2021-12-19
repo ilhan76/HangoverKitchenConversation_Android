@@ -8,10 +8,7 @@ import com.kudashov.hangoverkitchenconversation.*
 import com.kudashov.hangoverkitchenconversation.data.RoomDetail
 import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.net.NetworkService
-import com.kudashov.hangoverkitchenconversation.util.CustomException
-import com.kudashov.hangoverkitchenconversation.util.FailToJoinRoom
-import com.kudashov.hangoverkitchenconversation.util.FailToLeaveRoom
-import com.kudashov.hangoverkitchenconversation.util.NoItems
+import com.kudashov.hangoverkitchenconversation.util.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -33,7 +30,6 @@ class RoomRepository {
         val mutation = CreateRoomMutation(
             title, description, isOpen, canSendAnonymousMessage, limit
         )
-        Log.d(tag, "createRoom: $token")
 
         NetworkService
             .getInstance()
@@ -225,7 +221,7 @@ class RoomRepository {
     }
 
     private fun <T> handleError(e: ApolloException, hub: Subject<T>) {
-        Log.d(tag, "onFailure: $e")
+        logError("onFailure: $e")
         hub.onError(e)
     }
 }
