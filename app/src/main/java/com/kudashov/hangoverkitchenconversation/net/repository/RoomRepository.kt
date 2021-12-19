@@ -11,6 +11,7 @@ import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.util.CustomException
 import com.kudashov.hangoverkitchenconversation.util.FailToJoinRoom
 import com.kudashov.hangoverkitchenconversation.util.FailToLeaveRoom
+import com.kudashov.hangoverkitchenconversation.util.NoItems
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -142,7 +143,7 @@ class RoomRepository {
         return Completable.fromObservable(subject)
     }
 
-    fun getAllRooms(token: String) : Observable<List<RoomItem>> {
+    fun getAllRooms(token: String): Observable<List<RoomItem>> {
         val subject = PublishSubject.create<List<RoomItem>>()
 
         NetworkService
@@ -155,6 +156,8 @@ class RoomRepository {
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.allRooms?.map { it.toDomain() })
+                    } else {
+                        subject.onError(NoItems())
                     }
                 }
 
@@ -180,6 +183,8 @@ class RoomRepository {
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.ownRooms?.map { it.toDomain() })
+                    } else {
+                        subject.onError(NoItems())
                     }
                 }
 
@@ -205,6 +210,8 @@ class RoomRepository {
 
                     if (!response.hasErrors()) {
                         subject.onNext(response.data?.managedRooms?.map { it.toDomain() })
+                    } else {
+                        subject.onError(NoItems())
                     }
                 }
 
@@ -217,7 +224,7 @@ class RoomRepository {
         return subject
     }
 
-    private fun<T> handleError(e: ApolloException, hub: Subject<T>){
+    private fun <T> handleError(e: ApolloException, hub: Subject<T>) {
         Log.d(tag, "onFailure: $e")
         hub.onError(e)
     }

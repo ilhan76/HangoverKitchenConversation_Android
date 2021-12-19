@@ -3,6 +3,7 @@ package com.kudashov.hangoverkitchenconversation.interactor
 import com.kudashov.hangoverkitchenconversation.data.RoomDetail
 import com.kudashov.hangoverkitchenconversation.data.RoomItem
 import com.kudashov.hangoverkitchenconversation.net.repository.RoomRepository
+import com.kudashov.hangoverkitchenconversation.util.io
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
@@ -29,26 +30,26 @@ class RoomInteractor(
     }
 
     fun getRoom(token: String, id: String): Observable<RoomDetail> {
-        return roomRepository.getRoom(token, id)
+        return roomRepository.getRoom(token, id).io()
     }
 
     fun joinRoom(token: String, id: String): Observable<RoomDetail> {
-        return roomRepository.joinRoom(token, id)
+        return roomRepository.joinRoom(token, id).io()
     }
 
     fun leaveRoom(token: String, id: String): Completable {
-        return roomRepository.leaveRoom(token, id)
+        return roomRepository.leaveRoom(token, id).io()
     }
 
     fun getAllRooms(token: String) : Observable<List<RoomItem>> {
-        return roomRepository.getAllRooms(token)
+        return roomRepository.getAllRooms(token).io()
     }
 
     fun getOwnRooms(token: String): Observable<List<RoomItem>> {
-        return roomRepository.getOwnRooms(token)
+        return roomRepository.getOwnRooms(token).io()
     }
 
     fun getManegedRooms(token: String): Observable<List<RoomItem>> {
-        return roomRepository.getManegedRooms(token)
+        return roomRepository.getManegedRooms(token).io()
     }
 }

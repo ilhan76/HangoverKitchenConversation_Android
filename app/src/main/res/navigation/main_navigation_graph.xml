@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomsFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.RoomsFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.rooms.RoomsFragment"
         android:label="RoomsFragment"
         tools:layout="@layout/fragment_rooms">
         <action

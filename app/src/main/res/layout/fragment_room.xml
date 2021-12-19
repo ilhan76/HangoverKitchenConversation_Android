@@ -39,6 +39,7 @@
         android:id="@+id/rv_messages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/item_message"
         app:layout_constraintBottom_toTopOf="@+id/send_message_area"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -48,22 +49,21 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
             android:id="@+id/etv_email"
             android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="20dp"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
             android:layout_weight="18"
-            android:background="@drawable/shape_rounded"
             android:paddingHorizontal="10dp" />
 
         <ImageView
             android:id="@+id/iv_send"
             android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_height="55dp"
+            android:paddingVertical="10dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"

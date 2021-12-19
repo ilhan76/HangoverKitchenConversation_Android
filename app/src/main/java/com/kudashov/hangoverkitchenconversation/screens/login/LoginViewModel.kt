@@ -31,7 +31,6 @@ class LoginViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ onSuccess(it) }, { onError(it) })
-
     }
 
     private fun onSuccess(response: SuccessAuthResponse) {
