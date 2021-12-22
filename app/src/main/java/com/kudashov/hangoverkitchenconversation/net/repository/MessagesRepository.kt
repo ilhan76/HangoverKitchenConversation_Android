@@ -57,16 +57,14 @@ class MessagesRepository {
         token: String,
         roomId: String,
         text: String,
-        isAnonymous: Boolean,
-        photos: List<String>?
+        isAnonymous: Boolean
     ): Completable {
         val hub = PublishSubject.create<List<Message>>()
         val mutation = SendMessageMutation(
             SendMessageInput(
                 roomId = roomId,
                 text = text,
-                isAnonimus = isAnonymous,
-                photoes = Input.fromNullable(photos)
+                isAnonimus = isAnonymous
             )
         )
 

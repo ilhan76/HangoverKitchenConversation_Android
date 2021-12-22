@@ -1,10 +1,8 @@
 package com.kudashov.hangoverkitchenconversation.screens.room
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -43,8 +41,7 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
                 viewModel.sendMessages(
                     roomId = arguments?.getString(Arguments.ROOM_ID)!!,
                     text = etv_message.text.toString(),
-                    isAnonymous = false,
-                    photos = null
+                    isAnonymous = false
                 )
             }
         }
@@ -81,6 +78,9 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
                 logDebug(state.content.toString())
 /*                adapter.setList(state.content as List<RoomItem>)
                 rv_messages.smoothScrollToPosition(adapter.itemCount)*/
+            }
+            RoomState.MessageHasBeenSend -> {
+                placeholder.visibility = View.GONE
             }
         }
     }

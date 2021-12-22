@@ -3,6 +3,24 @@
 
 subscription observeNotification {
     notify {
-        type
+        type,
+        value {
+            ...on UserNotification {
+                userName
+            }
+            ...on RoomNotification {
+                roomTitle
+                roomId
+            }
+            ... on MessageNotification {
+                roomTitle,
+                text,
+                author {
+                    name,
+                    description
+                },
+                repliedId
+            }
+        }
     }
 }

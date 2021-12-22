@@ -19,6 +19,8 @@ sealed class RoomState {
 
     data class Error(val message: String) : RoomState()
     data class LoadedMessages<T>(val content: T) : RoomState()
+
+    object MessageHasBeenSend : RoomState()
 }
 
 class RoomViewModel(
@@ -35,18 +37,7 @@ class RoomViewModel(
     fun checkGroupMembership(roomId: String) {
         _liveData.value = RoomState.Loading
 
-        roomInteractor.getRoom(
-            token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
-            id = roomId
-        ).main().subscribe({
-            if (it.users.any { it.name == sharedPrefInteractor.getString(Arguments.NAME) }) {
-                _liveData.value = RoomState.BelongToTheRoom
-            } else {
-                _liveData.value = RoomState.DoesNotBelongToTheRoom(null)
-            }
-        }, {
-
-        })
+        //todo - Проверить, принадлежит ли пользователь в комнате
     }
 
     fun joinRoom(roomId: String) {
@@ -89,8 +80,7 @@ class RoomViewModel(
     fun sendMessages(
         roomId: String,
         text: String,
-        isAnonymous: Boolean,
-        photos: List<String>?
+        isAnonymous: Boolean
     ) {
         _liveData.value = RoomState.Loading
 
@@ -98,9 +88,10 @@ class RoomViewModel(
             token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
             roomId = roomId,
             text = text,
-            isAnonymous = isAnonymous,
-            photos = photos
-        ).main().subscribe({}, { handleError(it) })
+            isAnonymous = isAnonymous
+        ).main().subscribe({
+            _liveData.value = RoomState.MessageHasBeenSend
+        }, { handleError(it) })
     }
 
     private fun handleError(e: Throwable) {
@@ -110,12 +101,5 @@ class RoomViewModel(
             is FailToJoinRoom -> RoomState.DoesNotBelongToTheRoom("Не удалось присоединиться к комнате")
             else -> RoomState.Error("Что-то пошло не так")
         }
-/*        _liveData.value = RoomState.Error(
-            when (e) {
-                is NoItems -> "Не удалось загрузить список комнат"
-                is FailToJoinRoom -> "Не удалось присоединиться к комнате"
-                else -> "Что-то пошло не так"
-            }
-        )*/
     }
 }

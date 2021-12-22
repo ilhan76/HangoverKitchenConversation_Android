@@ -36,6 +36,7 @@ query getRoom(
 }
 
 mutation joinRoom($roomId: String!) {
+    # Здесь ответ не нужен, скорее всего
     joinRoom(roomId: $roomId){
         id,
         title,

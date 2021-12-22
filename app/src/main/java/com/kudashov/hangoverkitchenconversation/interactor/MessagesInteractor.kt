@@ -19,10 +19,9 @@ class MessagesInteractor(
         token: String,
         roomId: String,
         text: String,
-        isAnonymous: Boolean,
-        photos: List<String>?
+        isAnonymous: Boolean
     ): Completable {
-        return repository.sendMessages(token, roomId, text, isAnonymous, photos).io()
+        return repository.sendMessages(token, roomId, text, isAnonymous).io()
     }
 
     fun observeMessages(token: String, roomId: String): Observable<Message> {

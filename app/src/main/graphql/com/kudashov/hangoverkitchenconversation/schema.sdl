@@ -124,7 +124,7 @@ input SendMessageInput {
   isAnonimus: Boolean!
 
   # Нельзя отправить больше 5 фотографий
-  photoes: [Upload!]
+  # photoes: [Upload!]
 
   # id сообщения, на которое ответил пользователь.
   repliedId: String
