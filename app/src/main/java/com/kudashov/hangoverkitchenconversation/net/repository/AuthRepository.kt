@@ -2,6 +2,7 @@ package com.kudashov.hangoverkitchenconversation.net.repository
 
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.kudashov.hangoverkitchenconversation.LoginQuery
@@ -12,13 +13,11 @@ import com.kudashov.hangoverkitchenconversation.net.NetworkService
 import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.type.RegisterResult
 import com.kudashov.hangoverkitchenconversation.type.UpdateProfileInput
-import com.kudashov.hangoverkitchenconversation.util.EmailAlreadyExist
+import com.kudashov.hangoverkitchenconversation.util.*
 import com.kudashov.hangoverkitchenconversation.util.constants.ErrorCodes.BAD_USER_INPUT
-import com.kudashov.hangoverkitchenconversation.util.IncorrectPassOrEmail
-import com.kudashov.hangoverkitchenconversation.util.RegisterFailed
 import com.kudashov.hangoverkitchenconversation.util.constants.RequestParams.CODE
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
@@ -26,7 +25,7 @@ class AuthRepository {
 
     private val tag: String = this.javaClass.simpleName
 
-    fun login(email: String, pass: String): Observable<SuccessAuthResponse> {
+    fun login(email: String, pass: String): Single<SuccessAuthResponse> {
         val subject = PublishSubject.create<SuccessAuthResponse>()
         val loginQuery = LoginQuery(email, pass)
 
@@ -52,11 +51,11 @@ class AuthRepository {
                     subject.onError(e)
                 }
             })
-        return subject
+        return Single.fromObservable(subject)
     }
 
     fun register(email: String, pass: String): Completable {
-        val subject = PublishSubject.create<Unit>()
+        val hub = PublishSubject.create<Unit>()
         val registerMutation = RegisterUserMutation(email, pass)
 
         NetworkService
@@ -69,33 +68,38 @@ class AuthRepository {
 
                     if (!response.hasErrors()) {
                         when (response.data?.register) {
-                            RegisterResult.FAILED -> subject.onError(RegisterFailed())
-                            RegisterResult.SUCCESS -> subject.onComplete()
-                            else -> subject.onError(RegisterFailed())
+                            RegisterResult.FAILED -> hub.onError(RegisterFailed())
+                            RegisterResult.SUCCESS -> hub.onComplete()
+                            else -> hub.onError(RegisterFailed())
                         }
-                        subject.onComplete()
+                        hub.onComplete()
                     } else {
                         val exception =
                             when (response.errors?.first()?.customAttributes?.get(CODE)) {
                                 BAD_USER_INPUT -> EmailAlreadyExist()
                                 else -> RegisterFailed()
                             }
-                        subject.onError(exception)
+                        hub.onError(exception)
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
                     Log.d("TAG", "onFailure: $e")
-                    handleError(e, subject)
+                    handleError(e, hub)
                 }
             })
 
-        return Completable.fromObservable(subject)
+        return Completable.fromObservable(hub)
     }
 
-    fun updateProfileInfo(token: String, profile: UpdateProfileInput): Observable<Profile> {
-        val subject = PublishSubject.create<Profile>()
-        val mutation = UpdateUserMutation(profile)
+    fun updateProfileInfo(token: String, name: String, description: String): Single<Profile> {
+        val hub = PublishSubject.create<Profile>()
+        val mutation = UpdateUserMutation(
+            UpdateProfileInput(
+                Input.fromNullable(name),
+                Input.fromNullable(description)
+            )
+        )
 
         NetworkService.getInstance()
             ?.getApolloClientWithTokenInterceptor(token)
@@ -105,20 +109,22 @@ class AuthRepository {
                     Log.d(tag, "onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        subject.onNext(response.data?.updateProfileInfo?.toProfile())
+                        hub.onNext(response.data?.updateProfileInfo?.toProfile())
+                    } else {
+                        hub.onError(FailToUpdateProfileInfo())
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    handleError(e, subject)
+                    handleError(e, hub)
                 }
 
             })
 
-        return subject
+        return Single.fromObservable(hub)
     }
 
-    private fun<T> handleError(e: ApolloException, hub: Subject<T>){
+    private fun <T> handleError(e: ApolloException, hub: Subject<T>) {
         Log.d(tag, "onFailure: $e")
         hub.onError(e)
     }

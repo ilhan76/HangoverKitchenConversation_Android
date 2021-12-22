@@ -7,6 +7,7 @@ import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.util.BaseState
 import com.kudashov.hangoverkitchenconversation.util.RegisterFailed
 import com.kudashov.hangoverkitchenconversation.util.default
+import com.kudashov.hangoverkitchenconversation.util.main
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -21,8 +22,7 @@ class RegisterViewModel(
         _liveData.value = BaseState.Loading
 
         authInteractor.register(email, pass)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .main()
             .subscribe({onComplete()}, {onError(it)})
     }
 
