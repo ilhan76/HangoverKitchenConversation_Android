@@ -16,8 +16,7 @@ import com.kudashov.hangoverkitchenconversation.util.logDebug
 import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_room.*
-import kotlinx.android.synthetic.main.layout_placeholder.*
-import kotlinx.android.synthetic.main.layout_placeholder.view.*
+import kotlinx.android.synthetic.main.layout_room_placeholder.*
 
 class RoomFragment : Fragment(R.layout.fragment_room) {
 
@@ -96,10 +95,8 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
 
     private fun showJoinRoomButton() {
         placeholder.visibility = View.VISIBLE
-        with(placeholder) {
-            placeholder_background.isVisible = false
-            progress_bar.isVisible = false
-            layout_join_room.isVisible = true
-        }
+        placeholder_background.isVisible = false
+        progress_bar.isVisible = false
+        layout_join_room.isVisible = true
     }
 }

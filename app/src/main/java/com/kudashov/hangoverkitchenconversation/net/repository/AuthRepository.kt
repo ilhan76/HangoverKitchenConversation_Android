@@ -17,16 +17,17 @@ import com.kudashov.hangoverkitchenconversation.util.*
 import com.kudashov.hangoverkitchenconversation.util.constants.ErrorCodes.BAD_USER_INPUT
 import com.kudashov.hangoverkitchenconversation.util.constants.RequestParams.CODE
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
 class AuthRepository {
 
-    private val tag: String = this.javaClass.simpleName
+    //fixme понять, какого хрена не работает Single
 
-    fun login(email: String, pass: String): Single<SuccessAuthResponse> {
-        val subject = PublishSubject.create<SuccessAuthResponse>()
+    fun login(email: String, pass: String): Observable<SuccessAuthResponse> {
+        val hub = PublishSubject.create<SuccessAuthResponse>()
         val loginQuery = LoginQuery(email, pass)
 
         NetworkService
@@ -35,23 +36,24 @@ class AuthRepository {
             ?.query(loginQuery)
             ?.enqueue(object : ApolloCall.Callback<LoginQuery.Data>() {
                 override fun onResponse(response: Response<LoginQuery.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    logDebug("onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        response.data
-                        subject.onNext(response.data?.login?.toSuccessAuthResponse())
+                        val successAuthResponse = response.data?.login?.toSuccessAuthResponse()
+                        logDebug(successAuthResponse.toString())
+                        hub.onNext(successAuthResponse)
                     } else {
                         Log.d("TAG", "onResponse: ${response.errors}")
-                        subject.onError(IncorrectPassOrEmail())
+                        hub.onError(IncorrectPassOrEmail())
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
                     Log.d("TAG", "onFailure: $e")
-                    subject.onError(e)
+                    hub.onError(e)
                 }
             })
-        return Single.fromObservable(subject)
+        return hub
     }
 
     fun register(email: String, pass: String): Completable {
@@ -64,7 +66,7 @@ class AuthRepository {
             ?.mutate(registerMutation)
             ?.enqueue(object : ApolloCall.Callback<RegisterUserMutation.Data>() {
                 override fun onResponse(response: Response<RegisterUserMutation.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    logDebug("onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         when (response.data?.register) {
@@ -92,7 +94,7 @@ class AuthRepository {
         return Completable.fromObservable(hub)
     }
 
-    fun updateProfileInfo(token: String, name: String, description: String): Single<Profile> {
+    fun updateProfileInfo(token: String, name: String, description: String): Observable<Profile> {
         val hub = PublishSubject.create<Profile>()
         val mutation = UpdateUserMutation(
             UpdateProfileInput(
@@ -106,7 +108,7 @@ class AuthRepository {
             ?.mutate(mutation)
             ?.enqueue(object : ApolloCall.Callback<UpdateUserMutation.Data>() {
                 override fun onResponse(response: Response<UpdateUserMutation.Data>) {
-                    Log.d(tag, "onResponse: ${response.data}")
+                    logDebug("onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
                         hub.onNext(response.data?.updateProfileInfo?.toProfile())
@@ -121,11 +123,11 @@ class AuthRepository {
 
             })
 
-        return Single.fromObservable(hub)
+        return hub
     }
 
     private fun <T> handleError(e: ApolloException, hub: Subject<T>) {
-        Log.d(tag, "onFailure: $e")
+        logError("onFailure: $e")
         hub.onError(e)
     }
 }

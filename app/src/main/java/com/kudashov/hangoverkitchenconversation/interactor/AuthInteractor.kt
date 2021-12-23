@@ -12,7 +12,9 @@ class AuthInteractor(
     private val repository: AuthRepository
 ) {
 
-    fun login(email: String, pass: String): Single<SuccessAuthResponse> {
+    //fixme понять, какого хрена не работает Single
+
+    fun login(email: String, pass: String): Observable<SuccessAuthResponse> {
         return repository.login(email, pass).io()
     }
 
@@ -20,7 +22,7 @@ class AuthInteractor(
         return repository.register(email, pass).io()
     }
 
-    fun updateProfileInfo(token: String, name: String, description: String) : Single<Profile> {
+    fun updateProfileInfo(token: String, name: String, description: String) : Observable<Profile> {
         return repository.updateProfileInfo(token, name, description).io()
     }
 }

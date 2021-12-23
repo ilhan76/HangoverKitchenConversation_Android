@@ -3,11 +3,14 @@ package com.kudashov.hangoverkitchenconversation.screens.fill_profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kudashov.hangoverkitchenconversation.data.Profile
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.screens.room.RoomState
 import com.kudashov.hangoverkitchenconversation.util.*
 import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
+import io.reactivex.rxjava3.core.SingleObserver
+import io.reactivex.rxjava3.disposables.Disposable
 
 class FillProfileViewModel(
     private val authInteractor: AuthInteractor,
