@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.kudashov.hangoverkitchenconversation.data.isFilled
 import com.kudashov.hangoverkitchenconversation.interactor.AuthInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.net.repository.AuthRepository
+import com.kudashov.hangoverkitchenconversation.net.response.SuccessAuthResponse
 import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import com.kudashov.hangoverkitchenconversation.util.BaseState
 import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
@@ -58,12 +60,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
             is BaseState.Success<*> -> {
                 placeholder.visibility = View.GONE
-                findNavController().navigate(
-                    R.id.action_loginFragment_to_roomsFragment,
-                    bundleOf(
-                        Arguments.ACCESS_TOKEN to state.content
+                val response = state.content as SuccessAuthResponse
+
+                if (response.user.isFilled()) {
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_roomsFragment,
+                        bundleOf(
+                            Arguments.ACCESS_TOKEN to response.accessToken
+                        )
                     )
-                )
+                } else {
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_fillProfileFragment
+                    )
+                }
             }
         }
     }

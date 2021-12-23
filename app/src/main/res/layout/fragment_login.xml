@@ -84,8 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
-    <FrameLayout
-        android:id="@+id/placeholder"
+    <FrameLayout android:id="@+id/placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/placeholder"

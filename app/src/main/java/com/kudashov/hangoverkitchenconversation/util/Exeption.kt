@@ -10,3 +10,5 @@ class FailToCreateRoom : Throwable()
 class FailToJoinRoom : Throwable()
 class FailToLeaveRoom : Throwable()
 class NoItems : Throwable()
+
+class FailToUpdateProfileInfo : Throwable()

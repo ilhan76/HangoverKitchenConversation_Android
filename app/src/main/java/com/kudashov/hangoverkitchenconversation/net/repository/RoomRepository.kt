@@ -45,7 +45,7 @@ class RoomRepository {
                         response.errors?.forEach {
                             Log.d(tag, "onResponse: $it")
                         }
-                        subject.onError(CustomException(response.errors?.first()?.message))
+                        subject.onError(FailToCreateRoom())
                     }
                 }
 

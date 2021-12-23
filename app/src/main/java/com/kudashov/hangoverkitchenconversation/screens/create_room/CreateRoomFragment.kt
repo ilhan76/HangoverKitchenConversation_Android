@@ -15,7 +15,6 @@ import com.kudashov.hangoverkitchenconversation.util.viewModelsFactory
 import com.kudashov.hangoverkitchenconversation_android.R
 import kotlinx.android.synthetic.main.fragment_create_room.*
 import kotlinx.android.synthetic.main.fragment_create_room.placeholder
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class CreateRoomFragment : Fragment(R.layout.fragment_create_room) {
 
@@ -39,12 +38,12 @@ class CreateRoomFragment : Fragment(R.layout.fragment_create_room) {
         btn_create.setOnClickListener {
             if (
                 etv_title_input.text.toString().isNotEmpty() ||
-                etv_description_input.text.toString().isNotEmpty() ||
+                tie_description.text.toString().isNotEmpty() ||
                 etv_limit_input.text.toString().isNotEmpty()
             ) {
                 viewModel.createRoom(
                     title = etv_title_input.text.toString(),
-                    description = etv_description_input.text.toString(),
+                    description = tie_description.text.toString(),
                     isOpen = sc_is_open.isChecked,
                     canSendAnonymousMessage = sc_can_send_anonymous_message.isChecked,
                     limit = etv_limit_input.text.toString().toInt()

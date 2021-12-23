@@ -63,14 +63,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etv_description"
+                android:id="@+id/til_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etv_description_input"
+                    android:id="@+id/tie_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top|start"

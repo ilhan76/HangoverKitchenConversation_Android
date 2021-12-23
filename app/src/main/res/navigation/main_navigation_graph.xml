@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/fillProfileFragment"
-        android:name="com.kudashov.hangoverkitchenconversation.screens.register.FillProfileFragment"
+        android:name="com.kudashov.hangoverkitchenconversation.screens.fill_profile.FillProfileFragment"
         android:label="FillProfileFragment"
         tools:layout="@layout/fragment_register_fill_profile">
         <action
@@ -47,15 +47,15 @@
             app:destination="@id/registerFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_loginFragment_to_fillProfileFragment"
+            app:destination="@id/fillProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.kudashov.hangoverkitchenconversation.screens.register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
-        <action
-            android:id="@+id/action_registerFragment_to_fillProfileFragment"
-            app:destination="@id/fillProfileFragment" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

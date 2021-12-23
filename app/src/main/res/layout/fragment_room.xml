@@ -75,7 +75,7 @@
 
     <include
         android:id="@+id/placeholder"
-        layout="@layout/layout_placeholder"
+        layout="@layout/layout_room_placeholder"
         android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
