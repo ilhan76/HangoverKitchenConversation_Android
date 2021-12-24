@@ -16,22 +16,9 @@ mutation createRoom(
     }
 }
 
-query getRoom(
-    $roomId: String!
-) {
+query isUserMemberedInRoom($roomId : String!) {
     room(roomId: $roomId) {
-        id,
-        title,
-        isOpen,
-        date,
-        description,
-        canSendAnonimusMessage,
-        limit,
-        participantsCount,
-        users {
-            name,
-            description
-        }
+        isUserMemberInRoom
     }
 }
 

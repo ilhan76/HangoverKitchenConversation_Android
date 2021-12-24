@@ -29,8 +29,8 @@ class RoomInteractor(
         )
     }
 
-    fun getRoom(token: String, id: String): Observable<RoomDetail> {
-        return roomRepository.getRoom(token, id).io()
+    fun isUserMemberedInRoom(token: String, id: String): Observable<Boolean> {
+        return roomRepository.isUserMemberedInRoom(token, id).io()
     }
 
     fun joinRoom(token: String, id: String): Observable<RoomDetail> {

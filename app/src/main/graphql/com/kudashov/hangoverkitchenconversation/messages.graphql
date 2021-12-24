@@ -27,9 +27,7 @@ mutation sendMessage(
             name,
             description
         },
-        text,
-        photoes,
-        repliedId
+        text
     }
 }
 
@@ -43,8 +41,6 @@ subscription observeNewMessage(
             name,
             description
         },
-        text,
-        photoes,
-        repliedId
+        text
     }
 }

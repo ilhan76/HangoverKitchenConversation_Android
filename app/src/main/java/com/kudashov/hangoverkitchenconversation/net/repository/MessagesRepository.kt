@@ -2,7 +2,6 @@ package com.kudashov.hangoverkitchenconversation.net.repository
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloSubscriptionCall
-import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.kudashov.hangoverkitchenconversation.GetMessagesQuery

@@ -24,7 +24,7 @@ fun UpdateUserMutation.UpdateProfileInfo.toProfile() = Profile(
 // endregion
 
 // region Room
-fun GetRoomQuery.Room.toDomain() = RoomDetail(
+/*fun GetRoomQuery.Room.toDomain() = RoomDetail(
     id = id,
     title = title,
     isOpen = isOpen,
@@ -38,7 +38,7 @@ fun GetRoomQuery.Room.toDomain() = RoomDetail(
             name = it.name ?: "",
             description = it.description ?: ""
         )
-    } ?: emptyList<Profile>()) as List<Profile>)
+    } ?: emptyList<Profile>()) as List<Profile>)*/
 
 fun JoinRoomMutation.JoinRoom.toDomain() = RoomDetail(
     id = id,
@@ -92,8 +92,7 @@ fun GetMessagesQuery.Message.toDomain() = Message(
         name = author?.name ?: "Anonymous",
         description = author?.description ?: ""
     ),
-    text = text,
-    photos = photoes ?: emptyList()
+    text = text
 )
 
 fun ObserveNewMessageSubscription.NewMessages.toDomain() = Message(
@@ -103,7 +102,6 @@ fun ObserveNewMessageSubscription.NewMessages.toDomain() = Message(
         name = author?.name ?: "Anonymous",
         description = author?.description ?: ""
     ),
-    text = text,
-    photos = photoes ?: emptyList()
+    text = text
 )
 //endregion

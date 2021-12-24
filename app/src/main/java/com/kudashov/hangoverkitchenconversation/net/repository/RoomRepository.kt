@@ -57,29 +57,31 @@ class RoomRepository {
         return subject
     }
 
-    fun getRoom(token: String, id: String): Observable<RoomDetail> {
-        val subject = PublishSubject.create<RoomDetail>()
-        val query = GetRoomQuery(id)
+    fun isUserMemberedInRoom(token: String, id: String): Observable<Boolean> {
+        val hub = PublishSubject.create<Boolean>()
+        val query = IsUserMemberedInRoomQuery(id)
 
         NetworkService
             .getInstance()
             ?.getApolloClientWithTokenInterceptor(token)
             ?.query(query)
-            ?.enqueue(object : ApolloCall.Callback<GetRoomQuery.Data>() {
-                override fun onResponse(response: Response<GetRoomQuery.Data>) {
+            ?.enqueue(object : ApolloCall.Callback<IsUserMemberedInRoomQuery.Data>() {
+                override fun onResponse(response: Response<IsUserMemberedInRoomQuery.Data>) {
                     Log.d(tag, "getRoom - onResponse: ${response.data}")
 
                     if (!response.hasErrors()) {
-                        subject.onNext(response.data?.room?.toDomain())
+                        hub.onNext(response.data?.room?.isUserMemberInRoom)
+                    } else {
+                        hub.onError(FailToCheckIsUserMemberedInRoom())
                     }
                 }
 
                 override fun onFailure(e: ApolloException) {
-                    handleError(e, subject)
+                    handleError(e, hub)
                 }
             })
 
-        return subject
+        return hub
     }
 
     fun joinRoom(token: String, id: String): Observable<RoomDetail> {

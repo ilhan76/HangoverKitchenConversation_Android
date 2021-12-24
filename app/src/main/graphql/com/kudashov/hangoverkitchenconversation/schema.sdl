@@ -43,6 +43,10 @@ type Query {
 
   # Возвращает все комнаты, в которые входит пользователь.
   ownRooms(from: Int, to: Int): [Room!]!
+
+  # На сервере используется поисковый движок, строка необязательно должна полностью совпадать с именем комнаты.
+  # Поиск происходит по имени и описанию.
+  findRoom(search: String!, from: Int, to: Int): [Room!]!
 }
 
 type Mutation {
@@ -124,7 +128,7 @@ input SendMessageInput {
   isAnonimus: Boolean!
 
   # Нельзя отправить больше 5 фотографий
-  # photoes: [Upload!]
+  photoes: [Upload!]
 
   # id сообщения, на которое ответил пользователь.
   repliedId: String
@@ -167,7 +171,7 @@ type MessageNotification {
 
 # Объекты, которые могут лежать внутри Notification. Клиент сам должен обработать их и вывести нужное сообщение.
 union NotificationValue =
-    UserNotification
+  UserNotification
   | RoomNotification
   | MessageNotification
 
@@ -205,6 +209,7 @@ type Room {
   limit: Int
   participantsCount: Int
   users: [Profile!]
+  isUserMemberInRoom: Boolean
 }
 
 # Профиль можно создать после активации аккаута.

@@ -37,6 +37,16 @@ class RoomViewModel(
     fun checkGroupMembership(roomId: String) {
         _liveData.value = RoomState.Loading
 
+        roomInteractor.isUserMemberedInRoom(
+            token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
+            id = roomId
+        ).main().subscribe({ isMembered ->
+            _liveData.value = if (isMembered) {
+                RoomState.BelongToTheRoom
+            } else {
+                RoomState.DoesNotBelongToTheRoom(null)
+            }
+        }, { handleError(it) })
         //todo - Проверить, принадлежит ли пользователь в комнате
     }
 

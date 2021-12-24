@@ -5,6 +5,7 @@ class CustomException(override val message: String?) : Throwable()
 class IncorrectPassOrEmail : Throwable()
 class RegisterFailed : Throwable()
 class EmailAlreadyExist : Throwable()
+class FailToCheckIsUserMemberedInRoom : Throwable()
 
 class FailToCreateRoom : Throwable()
 class FailToJoinRoom : Throwable()
