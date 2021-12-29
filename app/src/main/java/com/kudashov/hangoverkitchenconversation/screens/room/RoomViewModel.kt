@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kudashov.hangoverkitchenconversation.data.Message
+import com.kudashov.hangoverkitchenconversation.data.MessageItem
 import com.kudashov.hangoverkitchenconversation.interactor.MessagesInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.RoomInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.util.*
 import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
+import io.reactivex.rxjava3.core.Observable
+import java.util.*
+import kotlin.collections.ArrayList
 
 sealed class RoomState {
     object Default : RoomState()
@@ -32,7 +36,7 @@ class RoomViewModel(
     private val _liveData = MutableLiveData<RoomState>().default(RoomState.Default)
     val liveData: LiveData<RoomState> = _liveData
 
-    private val currentList: MutableList<Message> = ArrayList()
+    private val currentList: MutableList<MessageItem> = ArrayList()
 
     fun checkGroupMembership(roomId: String) {
         _liveData.value = RoomState.Loading
@@ -67,7 +71,17 @@ class RoomViewModel(
         messagesInteractor.getMessages(
             token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
             roomId = roomId
-        ).main().subscribe({ list ->
+        ).main().flatMap { list ->
+            val username = sharedPrefInteractor.getString(Arguments.NAME)
+            Observable.just(list.map { message ->
+                MessageItem(
+                    text = message.text,
+                    name = message.author.name,
+                    date = message.date,
+                    isMyMessage = message.author.name == username
+                )
+            })
+        }.subscribe({ list ->
             logDebug("onSuccess: Loaded list of room")
             _liveData.value = RoomState.LoadedMessages(list)
             currentList.clear()
@@ -81,7 +95,17 @@ class RoomViewModel(
         messagesInteractor.observeMessages(
             token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
             roomId = roomId
-        ).main().subscribe({
+        ).main().flatMap { message ->
+            val username = sharedPrefInteractor.getString(Arguments.NAME)
+            Observable.just(
+                MessageItem(
+                    text = message.text,
+                    name = message.author.name,
+                    date = message.date,
+                    isMyMessage = message.author.name == username
+                )
+            )
+        }.subscribe({
             currentList.add(it)
             _liveData.value = RoomState.LoadedMessages(currentList)
         }, { handleError(it) })

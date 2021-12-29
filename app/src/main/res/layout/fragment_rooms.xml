@@ -56,12 +56,6 @@
                 android:layout_height="wrap_content"
                 android:text="Мои комнаты" />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/i_am_admin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Я админ" />
-
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView

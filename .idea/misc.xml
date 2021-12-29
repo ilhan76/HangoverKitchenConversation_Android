@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.31979166666666664" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/drawable/btn_chacked.xml" value="0.1875" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/drawable/btn_checked.xml" value="0.1875" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/drawable/btn_unchecked.xml" value="0.33489583333333334" />
@@ -29,6 +30,12 @@
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/item_room.xml" value="0.67" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/layout_base_placeholder.xml" value="0.31875" />
         <entry key="..\:/projects/android/Hangover_Kitchen_Conversation/app/src/main/res/layout/layout_placeholder.xml" value="0.31875" />
+        <entry key="app/src/main/res/drawable/shape_message.xml" value="0.35240040858018384" />
+        <entry key="app/src/main/res/drawable/shape_my_message.xml" value="0.35240040858018384" />
+        <entry key="app/src/main/res/drawable/shape_rounded.xml" value="0.35240040858018384" />
+        <entry key="app/src/main/res/layout/fragment_room.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_rooms.xml" value="0.21739130434782608" />
+        <entry key="app/src/main/res/layout/item_message.xml" value="0.5" />
       </map>
     </option>
   </component>

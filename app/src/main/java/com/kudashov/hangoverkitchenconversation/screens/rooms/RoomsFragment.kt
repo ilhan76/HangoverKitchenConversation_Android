@@ -77,7 +77,6 @@ class RoomsFragment : Fragment(R.layout.fragment_rooms), RoomItemClickDelegate {
                 placeholder.visibility = View.GONE
                 logDebug(state.content.toString())
                 adapter.setList(state.content as List<RoomItem>)
-//                rv_rooms.smoothScrollToPosition(adapter.itemCount)
             }
         }
     }
@@ -87,7 +86,6 @@ class RoomsFragment : Fragment(R.layout.fragment_rooms), RoomItemClickDelegate {
         when (position) {
             0 -> viewModel.getAllRooms()
             1 -> viewModel.getOwnRooms()
-            2 -> viewModel.getManegedRooms()
         }
     }
 

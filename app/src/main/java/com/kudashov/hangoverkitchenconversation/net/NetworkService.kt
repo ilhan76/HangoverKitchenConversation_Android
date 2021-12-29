@@ -1,6 +1,8 @@
 package com.kudashov.hangoverkitchenconversation.net
 
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.subscription.SubscriptionTransport
+import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -21,6 +23,8 @@ class NetworkService {
     }
 
     private val BASE_URL = "https://afternoon-brushlands-65833.herokuapp.com/graphql"
+    private val GRAPHQL_WEBSOCKET_ENDPOINT =
+        "wss://afternoon-brushlands-65833.herokuapp.com/graphql"
 
     fun getApolloClient(): ApolloClient {
         val okHttp = OkHttpClient.Builder()
@@ -35,7 +39,6 @@ class NetworkService {
     }
 
     fun getApolloClientWithTokenInterceptor(token: String): ApolloClient {
-
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val original: Request = chain.request()
@@ -54,6 +57,12 @@ class NetworkService {
         return ApolloClient.builder()
             .serverUrl(BASE_URL)
             .okHttpClient(httpClient)
+            .subscriptionTransportFactory(
+                WebSocketSubscriptionTransport.Factory(
+                    GRAPHQL_WEBSOCKET_ENDPOINT,
+                    httpClient
+                )
+            )
             .build()
     }
 }

@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.kudashov.hangoverkitchenconversation.adapters.MessagesAdapter
+import com.kudashov.hangoverkitchenconversation.data.MessageItem
 import com.kudashov.hangoverkitchenconversation.interactor.MessagesInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.RoomInteractor
 import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
@@ -20,6 +22,8 @@ import kotlinx.android.synthetic.main.layout_room_placeholder.*
 
 class RoomFragment : Fragment(R.layout.fragment_room) {
 
+    private val adapter: MessagesAdapter = MessagesAdapter()
+
     private val viewModel by viewModelsFactory {
         RoomViewModel(
             messagesInteractor = MessagesInteractor(MessagesRepository()),
@@ -28,24 +32,29 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
         )
     }
 
+    private lateinit var roomId : String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        roomId = arguments?.getString(Arguments.ROOM_ID)!!
         initView()
     }
 
     private fun initView() {
         viewModel.liveData.observe(viewLifecycleOwner, ::render)
+        rv_messages.adapter = adapter
+        //viewModel.observeNewMessage(roomId)
         iv_send.setOnClickListener {
             if (etv_message.text.isNotEmpty()) {
                 viewModel.sendMessages(
-                    roomId = arguments?.getString(Arguments.ROOM_ID)!!,
+                    roomId = roomId,
                     text = etv_message.text.toString(),
                     isAnonymous = false
                 )
             }
         }
         btn_join_room.setOnClickListener {
-            viewModel.joinRoom(arguments?.getString(Arguments.ROOM_ID)!!)
+            viewModel.joinRoom(roomId)
         }
         iv_back.setOnClickListener {
             findNavController().navigate(R.id.action_roomFragment_to_roomsFragment)
@@ -74,12 +83,16 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
             RoomState.Loading -> showProgressBar()
             is RoomState.LoadedMessages<*> -> {
                 placeholder.visibility = View.GONE
+                logDebug("_________________")
                 logDebug(state.content.toString())
-/*                adapter.setList(state.content as List<RoomItem>)
-                rv_messages.smoothScrollToPosition(adapter.itemCount)*/
+                logDebug("_________________")
+                adapter.setList(state.content as List<MessageItem>)
+                rv_messages.smoothScrollToPosition(adapter.itemCount)
             }
             RoomState.MessageHasBeenSend -> {
                 placeholder.visibility = View.GONE
+                etv_message.setText("")
+                //viewModel.getMessages(roomId)
             }
         }
     }

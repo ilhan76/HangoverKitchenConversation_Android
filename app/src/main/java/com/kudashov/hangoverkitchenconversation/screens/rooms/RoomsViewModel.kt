@@ -33,14 +33,6 @@ class RoomsViewModel(
         ).main().subscribe({ onSuccess(it) }, { onError(it) })
     }
 
-    fun getManegedRooms() {
-        _liveData.value = BaseState.Loading
-
-        roomInteractor.getManegedRooms(
-            token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
-        ).main().subscribe({ onSuccess(it) }, { onError(it) })
-    }
-
     private fun onSuccess(list: List<RoomItem>) {
         logDebug("onSuccess: Loaded list of room")
         _liveData.value = BaseState.Success(list)

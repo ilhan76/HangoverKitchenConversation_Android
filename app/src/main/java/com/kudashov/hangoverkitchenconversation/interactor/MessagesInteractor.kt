@@ -5,13 +5,12 @@ import com.kudashov.hangoverkitchenconversation.net.repository.MessagesRepositor
 import com.kudashov.hangoverkitchenconversation.util.io
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 
 class MessagesInteractor(
     private val repository: MessagesRepository
 ) {
 
-    fun getMessages(token: String, roomId: String): Single<List<Message>> {
+    fun getMessages(token: String, roomId: String): Observable<List<Message>> {
         return repository.getMessages(token, roomId).io()
     }
 

@@ -15,13 +15,12 @@ import com.kudashov.hangoverkitchenconversation.util.logDebug
 import com.kudashov.hangoverkitchenconversation.util.logError
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
 class MessagesRepository {
 
-    fun getMessages(token: String, roomId: String): Single<List<Message>> {
+    fun getMessages(token: String, roomId: String): Observable<List<Message>> {
         val hub = PublishSubject.create<List<Message>>()
         val query = GetMessagesQuery(roomId)
 
@@ -49,7 +48,7 @@ class MessagesRepository {
 
             })
 
-        return Single.fromObservable(hub)
+        return hub
     }
 
     fun sendMessages(
