@@ -1,8 +1,11 @@
 package com.kudashov.hangoverkitchenconversation.screens.room
 
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -40,10 +43,16 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
         initView()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initView() {
         viewModel.liveData.observe(viewLifecycleOwner, ::render)
         rv_messages.adapter = adapter
-        //viewModel.observeNewMessage(roomId)
+        etv_message.setOnFocusChangeListener { view, b ->
+            rv_messages.smoothScrollToPosition(adapter.itemCount)
+        }
+        iv_load.setOnClickListener{
+            viewModel.getMessages(roomId)
+        }
         iv_send.setOnClickListener {
             if (etv_message.text.isNotEmpty()) {
                 viewModel.sendMessages(
@@ -61,18 +70,19 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun render(state: RoomState) {
         when (state) {
             RoomState.Default -> {
                 placeholder.visibility = View.GONE
-                viewModel.checkGroupMembership(arguments?.getString(Arguments.ROOM_ID)!!)
+                viewModel.checkGroupMembership(roomId)
             }
             is RoomState.Error -> {
                 placeholder.visibility = View.GONE
                 Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
             }
             RoomState.BelongToTheRoom -> {
-                viewModel.getMessages(arguments?.getString(Arguments.ROOM_ID)!!)
+                viewModel.getMessages(roomId)
             }
             is RoomState.DoesNotBelongToTheRoom -> {
                 if (state.message != null){
@@ -83,16 +93,13 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
             RoomState.Loading -> showProgressBar()
             is RoomState.LoadedMessages<*> -> {
                 placeholder.visibility = View.GONE
-                logDebug("_________________")
-                logDebug(state.content.toString())
-                logDebug("_________________")
                 adapter.setList(state.content as List<MessageItem>)
                 rv_messages.smoothScrollToPosition(adapter.itemCount)
             }
             RoomState.MessageHasBeenSend -> {
                 placeholder.visibility = View.GONE
                 etv_message.setText("")
-                //viewModel.getMessages(roomId)
+                viewModel.getMessages(roomId)
             }
         }
     }

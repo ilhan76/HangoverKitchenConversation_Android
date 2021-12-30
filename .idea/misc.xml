@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/drawable/shape_message.xml" value="0.35240040858018384" />
         <entry key="app/src/main/res/drawable/shape_my_message.xml" value="0.35240040858018384" />
         <entry key="app/src/main/res/drawable/shape_rounded.xml" value="0.35240040858018384" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.23097826086956522" />
         <entry key="app/src/main/res/layout/fragment_room.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_rooms.xml" value="0.21739130434782608" />
         <entry key="app/src/main/res/layout/item_message.xml" value="0.5" />

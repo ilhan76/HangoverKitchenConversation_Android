@@ -6,6 +6,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.kudashov.hangoverkitchenconversation.LoginQuery
+import com.kudashov.hangoverkitchenconversation.LogoutMutation
 import com.kudashov.hangoverkitchenconversation.RegisterUserMutation
 import com.kudashov.hangoverkitchenconversation.UpdateUserMutation
 import com.kudashov.hangoverkitchenconversation.data.Profile
@@ -18,13 +19,38 @@ import com.kudashov.hangoverkitchenconversation.util.constants.ErrorCodes.BAD_US
 import com.kudashov.hangoverkitchenconversation.util.constants.RequestParams.CODE
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 
 class AuthRepository {
 
-    //fixme понять, какого хрена не работает Single
+    fun logout() : Completable {
+        val hub = PublishSubject.create<Unit>()
+        val mutation = LogoutMutation()
+
+        NetworkService
+            .getInstance()
+            ?.getApolloClient()
+            ?.mutate(mutation)
+            ?.enqueue(object : ApolloCall.Callback<LogoutMutation.Data>() {
+                override fun onResponse(response: Response<LogoutMutation.Data>) {
+                    logDebug("onResponse: ${response.data}")
+
+                    if (!response.hasErrors()) {
+                        hub.onComplete()
+                    } else {
+                        hub.onError(LogoutFailed())
+                    }
+                }
+
+                override fun onFailure(e: ApolloException) {
+                    logError("onFailure: $e")
+                    hub.onError(e)
+                }
+
+            })
+        return Completable.fromObservable(hub)
+    }
 
     fun login(email: String, pass: String): Observable<SuccessAuthResponse> {
         val hub = PublishSubject.create<SuccessAuthResponse>()

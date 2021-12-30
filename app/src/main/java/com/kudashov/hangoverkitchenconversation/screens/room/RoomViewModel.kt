@@ -1,5 +1,7 @@
 package com.kudashov.hangoverkitchenconversation.screens.room
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +13,10 @@ import com.kudashov.hangoverkitchenconversation.interactor.SharedPrefInteractor
 import com.kudashov.hangoverkitchenconversation.util.*
 import com.kudashov.hangoverkitchenconversation.util.constants.Arguments
 import io.reactivex.rxjava3.core.Observable
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 sealed class RoomState {
@@ -36,8 +41,6 @@ class RoomViewModel(
     private val _liveData = MutableLiveData<RoomState>().default(RoomState.Default)
     val liveData: LiveData<RoomState> = _liveData
 
-    private val currentList: MutableList<MessageItem> = ArrayList()
-
     fun checkGroupMembership(roomId: String) {
         _liveData.value = RoomState.Loading
 
@@ -51,7 +54,6 @@ class RoomViewModel(
                 RoomState.DoesNotBelongToTheRoom(null)
             }
         }, { handleError(it) })
-        //todo - Проверить, принадлежит ли пользователь в комнате
     }
 
     fun joinRoom(roomId: String) {
@@ -65,6 +67,7 @@ class RoomViewModel(
         }, { handleError(it) })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getMessages(roomId: String) {
         _liveData.value = RoomState.Loading
 
@@ -83,31 +86,13 @@ class RoomViewModel(
             })
         }.subscribe({ list ->
             logDebug("onSuccess: Loaded list of room")
-            _liveData.value = RoomState.LoadedMessages(list)
-            currentList.clear()
-            currentList.addAll(list)
-        }, { handleError(it) })
-    }
-
-    fun observeNewMessage(roomId: String) {
-        _liveData.value = RoomState.Loading
-
-        messagesInteractor.observeMessages(
-            token = sharedPrefInteractor.getString(Arguments.ACCESS_TOKEN),
-            roomId = roomId
-        ).main().flatMap { message ->
-            val username = sharedPrefInteractor.getString(Arguments.NAME)
-            Observable.just(
-                MessageItem(
-                    text = message.text,
-                    name = message.author.name,
-                    date = message.date,
-                    isMyMessage = message.author.name == username
-                )
-            )
-        }.subscribe({
-            currentList.add(it)
-            _liveData.value = RoomState.LoadedMessages(currentList)
+            _liveData.value = RoomState.LoadedMessages(
+                list.sortedWith(compareBy {
+                    LocalDateTime.parse(
+                        it.date.substring(0..18),
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+                    )
+                }))
         }, { handleError(it) })
     }
 

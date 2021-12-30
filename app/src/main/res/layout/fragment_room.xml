@@ -33,6 +33,16 @@
             android:textColor="@color/white"
             android:textSize="22sp" />
 
+        <ImageView
+            android:id="@+id/iv_load"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="end"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_load"
+            app:tint="@color/white" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

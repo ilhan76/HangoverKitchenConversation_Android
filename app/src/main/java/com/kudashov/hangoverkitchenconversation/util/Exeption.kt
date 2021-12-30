@@ -3,6 +3,7 @@ package com.kudashov.hangoverkitchenconversation.util
 class CustomException(override val message: String?) : Throwable()
 
 class IncorrectPassOrEmail : Throwable()
+class LogoutFailed: Throwable()
 class RegisterFailed : Throwable()
 class EmailAlreadyExist : Throwable()
 class FailToCheckIsUserMemberedInRoom : Throwable()
